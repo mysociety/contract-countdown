@@ -1,9 +1,0 @@
-$spacers: map-merge($spacers, (
-    "gutter": calc(var(--#{$variable-prefix}gutter-x, #{$grid-gutter-width}) * 0.5)
-));
-
-@if $enable-negative-margins {
-    $negative-spacers: map-merge($negative-spacers, (
-        "ngutter": calc(var(--#{$variable-prefix}gutter-x, #{$grid-gutter-width}) * -0.5)
-    ));
-}
