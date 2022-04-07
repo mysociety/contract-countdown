@@ -37,14 +37,22 @@ layout: default
             </fieldset>
         </form>
 
-        {% include contract-card.html council="Liverpool City Council" title="Household Waste Collection Service" href="#" cost="£5,679,145" length="13 year contract" remaining="3 months" remaining_percent="1" %}
+        {% for contract in site.data.uk_contracts_finder %}
+            {% capture council %}{{ contract.buyer_name }}{% endcapture %}
+            {% capture title %}{{ contract.tender_title }}{% endcapture %}
+            {% capture href %}{{ '/example' | relative_url }}{% endcapture %}
+            {% capture cost %}£{{ contract.value_human }}{% endcapture %}
+            {% capture length %}{% if contract.contract_length_months == '0' %}{{ contract.contract_length_days }} day contract{% else %}{{ contract.contract_length_months }} month contract{% endif %}{% endcapture %}
+            {% capture remaining %}{% if contract.contract_expires_months_from_now == '0' %}{{ contract.contract_expires_days_from_now }} days{% else %}{{ contract.contract_expires_months_from_now }} months{% endif %}{% endcapture %}
+            {% capture remaining_percent %}{{ contract.contract_time_remaining_fraction | times: 100 | at_least: 1 }}{% endcapture %}
+            {% include contract-card.html council=council title=title href=href cost=cost length=length remaining=remaining remaining_percent=remaining_percent %}
+        {% endfor %}
 
+        <!--
         {% include contract-card.html council="Liverpool City Council" title="Household Waste Collection Service" href="#" cost="£5,679,145" length="13 year contract" remaining="3 months" remaining_percent="1" %}
+        -->
 
-        {% include contract-card.html council="Liverpool City Council" title="Household Waste Collection Service" href="#" cost="£5,679,145" length="13 year contract" remaining="3 months" remaining_percent="1" %}
-
-        {% include contract-card.html council="Liverpool City Council" title="Household Waste Collection Service" href="#" cost="£5,679,145" length="13 year contract" remaining="3 months" remaining_percent="1" %}
-
+        <!--
         <nav aria-label="Pagination">
             <ul class="pagination justify-content-center mt-5">
                 <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
@@ -54,6 +62,7 @@ layout: default
                 <li class="page-item"><a class="page-link" href="#">Next</a></li>
             </ul>
         </nav>
+        -->
 
     </div>
 </div>

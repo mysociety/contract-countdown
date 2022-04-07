@@ -21,3 +21,10 @@ sass:
   sourcemap: never
   load_paths:
     - static/vendor/
+
+csv_reader:
+    converters:
+      - all
+tsv_reader:
+    converters:
+      - all
