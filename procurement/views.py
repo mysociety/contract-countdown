@@ -11,6 +11,7 @@ from procurement.mapit import (
 )
 
 class HomePageView(ListView):
+    paginate_by = 20
     context_object_name = "tenders"
     template_name = "procurement/home.html"
 
