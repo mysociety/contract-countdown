@@ -22,6 +22,9 @@ class Council(models.Model):
     def slugify_name(cls, name):
         return slugify(name, allow_unicode=True)
 
+    def get_absolute_url(self):
+        return "/council/%s/" % self.slug
+
 
 class Supplier(models.Model):
     name = models.CharField(max_length=200)

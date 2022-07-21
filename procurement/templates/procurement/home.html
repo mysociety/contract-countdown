@@ -7,12 +7,12 @@
 <div class="bg-gray-100 border-top py-4 py-md-5">
     <div class="container" style="max-width: 44em">
 
-        <form class="row">
+        <form class="row" action="{% url 'location_results' %}">
             <fieldset class="col-sm-auto me-auto">
                 <label for="council-search" class="form-label">Search by postcode or council name</label>
                 <div class="search-input">
                     <!-- { % include icons/search.html %} -->
-                    <input type="search" id="council-search" class="form-control">
+                    <input type="search" name="pc" id="council-search" class="form-control">
                 </div>
             </fieldset>
             <fieldset class="col-sm-auto">

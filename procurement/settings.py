@@ -24,9 +24,12 @@ env = environ.Env(
 )
 environ.Env.read_env(BASE_DIR / ".env")
 
+MAPIT_URL = env("MAPIT_URL")
+MAPIT_API_KEY = env("MAPIT_API_KEY")
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
 ALLOWED_HOSTS = env("ALLOWED_HOSTS")
+CACHE_FILE = env("CACHE_FILE")
 
 # Application definition
 
