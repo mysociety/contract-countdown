@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="initial-scale=1, viewport-fit=cover">
-    <title>{ { page.title | default: site.title | escape }}</title>
+    <title>{{ page_title }}</title>
     {% compress css %}
         <link rel="stylesheet" type="text/x-scss" href="{% static 'css/all.scss' %}">
     {% endcompress %}

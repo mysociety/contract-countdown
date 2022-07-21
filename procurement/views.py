@@ -17,6 +17,11 @@ class HomePageView(ListView):
     def get_queryset(self):
         return Tender.objects.filter(value__gt=0)[:100]
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "Contract Countdown"
+        return context
+
 
 class CouncilContractsView(DetailView):
 
@@ -30,6 +35,7 @@ class CouncilContractsView(DetailView):
         tenders = Tender.objects.filter(council=council,value__gt=0)[:100]
 
         context["tenders"] = tenders
+        context["page_title"] = "{} Contracts".format(council.name)
         return context
 
 
