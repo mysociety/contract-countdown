@@ -30,6 +30,7 @@ services:
       DEBUG: 1
       DATABASE_URL: 'postgres://postgres:password@db/procurement'
       EMAIL_HOST: email.svc
+      CACHE_FILE: 'data/cache'
   mailhog:
     image: mailhog/mailhog:v1.0.1
     restart: always
