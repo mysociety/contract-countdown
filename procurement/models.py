@@ -103,6 +103,9 @@ class Award(models.Model):
         if self.start_date is None or self.end_date is None:
             return 100
 
+        if self.contract_length().days == 0:
+            return 0
+
         time_since_start = date.today() - self.start_date
         return time_since_start.days / self.contract_length().days * 100
 
