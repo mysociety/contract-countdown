@@ -61,6 +61,9 @@ class Award(models.Model):
     date = models.DateField(blank=True, null=True)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
+    duration = models.IntegerField(
+        blank=True, null=True, help_text="contract length in days"
+    )
 
     tender = models.ForeignKey(Tender, on_delete=models.CASCADE)
 
