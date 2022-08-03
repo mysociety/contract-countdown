@@ -58,17 +58,25 @@ class Tender(models.Model):
 
 
 class TenderFilter(filters.FilterSet):
+    awards__end_date = filters.DateFromToRangeFilter()
+
     sort=filters.OrderingFilter(
         label="Sort by",
         fields=(
             ("value", "value"),
             ("awards__duration", "contract_length"),
+            ("awards__end_date", "time_remaining"),
         ),
         field_labels={
             "value": "Total Cost",
             "contract_length": "Contact Length",
+            "time_remaining": "Contact Remaining",
         },
     )
+
+    class Meta:
+        model = Tender
+        fields = ["awards__end_date"]
 
 
 class Award(models.Model):

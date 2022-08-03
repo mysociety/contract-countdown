@@ -22,7 +22,6 @@
                 {% bootstrap_field filter.form.sort %}
                 <input type="submit">
             </fieldset>
-        </form>
 
         <details>
             <summary class="my-3 my-md-4 text-center">More filters</summary>
@@ -50,28 +49,29 @@
                 <fieldset class="col-sm-6">
                     <legend class="form-label" style="font-size: 1em; float: none;">Show contracts with</legend>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" value="" name="limit" id="limit-any" checked>
+                        <input class="form-check-input" type="radio" value="" name="awards__end_date_after" id="limit-any" checked>
                         <label class="form-check-label" for="limit-any">any time left</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" value="" name="limit" id="limit-6">
+                        <input class="form-check-input" type="radio" value="{{ 6_months }}" name="awards__end_date_after" id="limit-6"{% if filter_end_date == 6_months %} checked{% endif %}>
                         <label class="form-check-label" for="limit-6">at least 6 months left</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" value="" name="limit" id="limit-12">
+                        <input class="form-check-input" type="radio" value="{{ 12_months }}" name="awards__end_date_after" id="limit-12"{% if filter_end_date == 12_months %} checked{% endif %}>
                         <label class="form-check-label" for="limit-12">at least 12 months left</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" value="" name="limit" id="limit-18">
+                        <input class="form-check-input" type="radio" value="{{ 18_months }}" name="awards__end_date"_after id="limit-18"{% if filter_end_date == 18_months %} checked{% endif %}>
                         <label class="form-check-label" for="limit-18">at least 18 months left</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" value="" name="limit" id="limit-24">
+                        <input class="form-check-input" type="radio" value="{{ 24_months }}" name="awards__end_date_after" id="limit-24"{% if filter_end_date == 24_months %} checked{% endif %}>
                         <label class="form-check-label" for="limit-24">at least 24 months left</label>
                     </div>
                 </fieldset>
             </div>
         </details>
+        </form>
 
         {% for tender in tenders %}
             <div class="mt-4 mt-md-5 p-3 p-md-4 bg-body border rounded position-relative">

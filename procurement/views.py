@@ -1,3 +1,5 @@
+from datetime import date, timedelta
+
 from django.db.models import F
 from django.shortcuts import redirect
 from django.views.generic import ListView, TemplateView, DetailView
@@ -30,6 +32,16 @@ class HomePageView(FilterView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["page_title"] = "Contract Countdown"
+
+        today = date.today()
+        months = (6, 12, 18, 24)
+        for month in months:
+            end = today + timedelta(days=30*month)
+            context["{}_months".format(month)] = end.isoformat()
+
+        if context["filter"].form["awards__end_date"].value():
+            context["filter_end_date"] = context["filter"].form["awards__end_date"].value()[0]
+
         return context
 
 
