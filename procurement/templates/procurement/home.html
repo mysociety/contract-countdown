@@ -1,6 +1,7 @@
 {% extends "procurement/base.html" %}
 
 {% load humanize %}
+{% load bootstrap4 %}
 
 {% block content %}
 
@@ -15,14 +16,11 @@
                     <input type="search" name="pc" id="council-search" class="form-control">
                 </div>
             </fieldset>
+        </form>
+        <form class="row" action="" method="GET">
             <fieldset class="col-sm-auto">
-                <label for="sort" class="form-label">Sort by</label>
-                <select id="sort" class="form-select">
-                    <option>Time remaining</option>
-                    <option>Total cost</option>
-                    <option>Estimated emissions</option>
-                    <option>Longest duration</option>
-                </select>
+                {% bootstrap_field filter.form.sort %}
+                <input type="submit">
             </fieldset>
         </form>
 
@@ -93,7 +91,7 @@
                         <span class="h4">??</span>
                     </div>
                 </div>
-                {% for award in tender.award_set.all %}
+                {% for award in tender.awards.all %}
                 <div class="progress mt-3 mt-md-4">
                     <div class="progress-bar bg-danger" style="width: {{ award.contract_percent_remaining }}%"></div>
                 </div>

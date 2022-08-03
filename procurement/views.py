@@ -1,7 +1,10 @@
+from django.db.models import F
 from django.shortcuts import redirect
 from django.views.generic import ListView, TemplateView, DetailView
 
-from procurement.models import Council, Tender
+from django_filters.views import FilterView
+
+from procurement.models import Council, Tender, TenderFilter
 from procurement.mapit import (
     MapIt,
     NotFoundException,
@@ -10,13 +13,19 @@ from procurement.mapit import (
     ForbiddenException,
 )
 
-class HomePageView(ListView):
+class HomePageView(FilterView):
     paginate_by = 20
     context_object_name = "tenders"
     template_name = "procurement/home.html"
+    filterset_class = TenderFilter
 
     def get_queryset(self):
-        return Tender.objects.filter(value__gt=0)[:100]
+        qs = Tender.objects.filter(
+            awards__value__gte=0
+        ).order_by("value")
+
+        return qs
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
