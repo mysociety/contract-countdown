@@ -96,4 +96,6 @@ class Command(BaseCommand):
                 award.end_date = dateutil.parser.parse(
                     row["contractPeriod_endDate"]
                 ).date()
+            if award.start_date and award.end_date:
+                award.duration = award.contract_length().days
             award.save()
