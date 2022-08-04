@@ -15,6 +15,7 @@ from procurement.mapit import (
     ForbiddenException,
 )
 
+
 class HomePageView(FilterView):
     paginate_by = 20
     context_object_name = "tenders"
@@ -22,12 +23,14 @@ class HomePageView(FilterView):
     filterset_class = TenderFilter
 
     def get_queryset(self):
-        qs = Tender.objects.filter(
-            awards__value__gte=0
-        ).order_by("value")
+        qs = (
+            Tender.objects.filter(awards__value__gte=0)
+            .select_related("council")
+            .prefetch_related("awards")
+            .order_by("value")
+        )
 
         return qs
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -36,11 +39,13 @@ class HomePageView(FilterView):
         today = date.today()
         months = (6, 12, 18, 24)
         for month in months:
-            end = today + timedelta(days=30*month)
+            end = today + timedelta(days=30 * month)
             context["{}_months".format(month)] = end.isoformat()
 
         if context["filter"].form["awards__end_date"].value():
-            context["filter_end_date"] = context["filter"].form["awards__end_date"].value()[0]
+            context["filter_end_date"] = (
+                context["filter"].form["awards__end_date"].value()[0]
+            )
 
         if context["filter"].form["classification"].value():
             context["classifications"] = (
@@ -59,7 +64,7 @@ class CouncilContractsView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         council = context["council"]
-        tenders = Tender.objects.filter(council=council,value__gt=0)[:100]
+        tenders = Tender.objects.filter(council=council, value__gt=0)[:100]
 
         context["tenders"] = tenders
         context["page_title"] = "{} Contracts".format(council.name)
@@ -86,11 +91,9 @@ class BaseLocationResultsView(TemplateView):
             if lon and lat:
                 gss_codes = mapit.wgs84_point_to_gss_codes(lon, lat)
             elif postcode:
-                print(postcode)
                 gss_codes = mapit.postcode_point_to_gss_codes(postcode)
             else:
                 return context
-            print(gss_codes)
             councils = Council.objects.filter(gss_code__in=gss_codes)
             context["councils"] = list(councils)
         except (
