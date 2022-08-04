@@ -42,6 +42,11 @@ class HomePageView(FilterView):
         if context["filter"].form["awards__end_date"].value():
             context["filter_end_date"] = context["filter"].form["awards__end_date"].value()[0]
 
+        if context["filter"].form["classification"].value():
+            context["classifications"] = (
+                context["filter"].form["classification"].value()
+            )
+
         return context
 
 

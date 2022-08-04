@@ -29,20 +29,24 @@
                 <fieldset class="col-sm-6">
                     <legend class="form-label" style="font-size: 1em; float: none;">Categories</legend>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="category-1" checked>
+                        <input class="form-check-input" type="checkbox" value="Fuel" id="category-1" name="classification"{% if "Fuel" in classifications %} checked{% endif %}>
                         <label class="form-check-label" for="category-1">Fuel &amp; energy</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="category-2" checked>
+                        <input class="form-check-input" type="checkbox" value="Refuse" id="category-2" name="classification"{% if "Refuse" in classifications %} checked{% endif %}>
                         <label class="form-check-label" for="category-2">Refuse &amp; waste</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="category-3" checked>
+                        <input class="form-check-input" type="checkbox" value="Sewage" id="category-3" name="classification"{% if "Sewage" in classifications %} checked{% endif %}>
                         <label class="form-check-label" for="category-3">Sewage</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="category-4" checked>
+                        <input class="form-check-input" type="checkbox" value="Catering" id="category-4" name="classification"{% if "Catering" in classifications %} checked{% endif %}>
                         <label class="form-check-label" for="category-4">Catering</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="Construction work" id="category-5" name="classification"{% if "Construction work" in classifications %} checked{% endif %}>
+                        <label class="form-check-label" for="category-5">Construction Work</label>
                     </div>
                     <p><a href="#">Why these categories?</a></p>
                 </fieldset>
@@ -91,6 +95,12 @@
                         <span class="h4">??</span>
                     </div>
                 </div>
+                <h5>Classifications</h5>
+                <p>
+                {% for classification in tender.tenderclassification.all %}
+                    {{ classification.classification.description }}{% if not forloop.last %} &middot; {% endif %}
+                {% endfor %}
+                </p>
                 {% for award in tender.awards.all %}
                 <div class="progress mt-3 mt-md-4">
                     <div class="progress-bar bg-danger" style="width: {{ award.contract_percent_remaining }}%"></div>

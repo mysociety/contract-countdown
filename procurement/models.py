@@ -72,8 +72,13 @@ class TenderClassification(models.Model):
 
 class TenderFilter(filters.FilterSet):
     awards__end_date = filters.DateFromToRangeFilter()
+    classification = filters.ModelMultipleChoiceFilter(
+        field_name="tenderclassification__classification__group",
+        queryset=Classification.objects.all().distinct("group"),
+        to_field_name="group",
+    )
 
-    sort=filters.OrderingFilter(
+    sort = filters.OrderingFilter(
         label="Sort by",
         fields=(
             ("value", "value"),
@@ -89,7 +94,7 @@ class TenderFilter(filters.FilterSet):
 
     class Meta:
         model = Tender
-        fields = ["awards__end_date"]
+        fields = ["awards__end_date", "classification"]
 
 
 class Award(models.Model):
