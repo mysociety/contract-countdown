@@ -1,4 +1,5 @@
 import re
+import json
 from os.path import join
 import dateutil.parser
 
@@ -11,23 +12,40 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 from django.db.utils import IntegrityError, DataError
 
-from procurement.models import Council, Tender, Award
+from procurement.models import (
+    Council,
+    Tender,
+    Award,
+    Classification,
+    TenderClassification,
+)
 
 
 class Command(BaseCommand):
     help = "import basic tender data"
 
     data_file = "data/procurement_data/merged.csv"
+    groups_file = "data/groups.json"
 
     def handle(self, *args, **options):
         self.options = options
 
+        self.get_groups()
         self.import_tenders()
 
     def get_files(self):
         r = requests.get(settings.PROCUREMENT_DATA)
         with open(self.data_file, "wb") as out:
             out.write(r.content)
+
+    def get_groups(self):
+        with open(self.groups_file, "r") as groups:
+            data = json.load(groups)
+
+        self.groups = {}
+        for group, members in data.items():
+            for member in members:
+                self.groups[member] = group
 
     def import_tenders(self):
         self.get_files()
@@ -81,6 +99,23 @@ class Command(BaseCommand):
                     title = ""
                 print("title is {} long".format(len(title)))
                 next
+
+            classification, created = Classification.objects.get_or_create(
+                description=row["classification_description"],
+                classification_scheme=row["classification_scheme"],
+            )
+
+            if (
+                self.groups.get(classification.description, None) is not None
+                and classification.group != self.groups[classification.description]
+            ):
+                classification.group = self.groups[classification.description]
+                classification.save()
+
+            tender_classification, created = TenderClassification.objects.get_or_create(
+                tender=tender,
+                classification=classification,
+            )
 
             award, created = Award.objects.get_or_create(
                 uuid=row["id_award"],
