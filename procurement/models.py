@@ -57,6 +57,19 @@ class Tender(models.Model):
     """
 
 
+class Classification(models.Model):
+    description = models.CharField(max_length=500)
+    classification_scheme = models.CharField(max_length=200)
+    group = models.CharField(max_length=300, blank=True, null=True)
+
+
+class TenderClassification(models.Model):
+    tender = models.ForeignKey(
+        Tender, on_delete=models.CASCADE, related_name="tenderclassification"
+    )
+    classification = models.ForeignKey(Classification, on_delete=models.CASCADE)
+
+
 class TenderFilter(filters.FilterSet):
     awards__end_date = filters.DateFromToRangeFilter()
 
