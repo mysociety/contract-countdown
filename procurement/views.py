@@ -71,6 +71,14 @@ class CouncilContractsView(DetailView):
         return context
 
 
+class ContractDetailView(DetailView):
+    model = Tender
+    context_object_name = "tender"
+    template_name = "procurement/contract_detail.html"
+    slug_field = "uuid"
+
+
+
 class BaseLocationResultsView(TemplateView):
     def render_to_response(self, context):
         councils = context.get("councils")

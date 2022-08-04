@@ -1,3 +1,4 @@
+from urllib.parse import quote
 from datetime import date
 
 from django.db import models
@@ -55,6 +56,9 @@ class Tender(models.Model):
     emissions scope
     emissions amount
     """
+
+    def uuid_url_safe(self):
+        return quote(self.uuid, safe="")
 
 
 class Classification(models.Model):
