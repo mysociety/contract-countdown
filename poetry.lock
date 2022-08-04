@@ -172,6 +172,18 @@ rcssmin = "1.1.0"
 rjsmin = "1.2.0"
 
 [[package]]
+name = "django-debug-toolbar"
+version = "3.5.0"
+description = "A configurable set of panels that display various debug information about the current request/response."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+Django = ">=3.2"
+sqlparse = ">=0.2.0"
+
+[[package]]
 name = "django-environ"
 version = "0.9.0"
 description = "A package that allows you to utilize 12factor inspired environment variables to configure your Django application."
@@ -477,7 +489,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "02368f2cefcdaaa3820c736c4c8243db77ab651d1ac40486520c752dae57874c"
+content-hash = "01e48257c71c12d9fcbab0d11eace1280e49bfabcf4ae019b6f443a68c94a0a0"
 
 [metadata.files]
 appdirs = []
@@ -542,6 +554,7 @@ django-compressor = [
     {file = "django_compressor-4.0-py2.py3-none-any.whl", hash = "sha256:b4fe15cc23bf39420b37cb0030572bd0971104ca1ec3764f502c0f179e576dff"},
     {file = "django_compressor-4.0.tar.gz", hash = "sha256:1db91b6d04293636a68bd1328dc7bb90d636b0295f67b1cc6d4fa102b9fd25f6"},
 ]
+django-debug-toolbar = []
 django-environ = [
     {file = "django-environ-0.9.0.tar.gz", hash = "sha256:bff5381533056328c9ac02f71790bd5bf1cea81b1beeb648f28b81c9e83e0a21"},
     {file = "django_environ-0.9.0-py2.py3-none-any.whl", hash = "sha256:f21a5ef8cc603da1870bbf9a09b7e5577ab5f6da451b843dbcc721a7bca6b3d9"},
