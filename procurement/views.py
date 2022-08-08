@@ -1,7 +1,8 @@
+from urllib.parse import unquote
 from datetime import date, timedelta
 
 from django.db.models import F
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import ListView, TemplateView, DetailView
 
 from django_filters.views import FilterView
@@ -78,6 +79,10 @@ class ContractDetailView(DetailView):
     slug_field = "uuid"
 
 
+    def get_object(self):
+        slug = unquote(self.kwargs[self.slug_url_kwarg])
+        obj = get_object_or_404(Tender, uuid=slug)
+        return obj
 
 class BaseLocationResultsView(TemplateView):
     def render_to_response(self, context):
