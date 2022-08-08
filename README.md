@@ -13,7 +13,7 @@ Clone the repository:
     git clone git@github.com:mysociety/contract-countdown.git
     cd contract-countdown
 
-Add a `MAPIT_URL` and `MAPIT_API_KEY` to a file at `.env`. You can [get a free MapIt API key here](https://mapit.mysociety.org).
+Add a `MAPIT_URL` and `MAPIT_API_KEY` to a file at `.env`. You can [get a free MapIt API key here](https://mapit.mysociety.org). A sample `.env` file is provided in `env.sample'.
 
 Start the Docker environment:
 
