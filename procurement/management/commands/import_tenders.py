@@ -47,6 +47,12 @@ class Command(BaseCommand):
             for member in members:
                 self.groups[member] = group
 
+    def get_date_from_str(self, date_string):
+        if not pd.isnull(date_string):
+            return dateutil.parser.parse(date_string).date()
+
+        return None
+
     def import_tenders(self):
         self.get_files()
         print("opening csv file")
@@ -83,6 +89,11 @@ class Command(BaseCommand):
                 tender.description = row["tender_description"]
                 tender.state = row["tender_status"]
                 tender.value = value
+                tender.published = self.get_date_from_str(row["tender_datePublished"])
+                tender.start_date = self.get_date_from_str(
+                    row["tenderPeriod_startDate"]
+                )
+                tender.end_date = self.get_date_from_str(row["tenderPeriod_endDate"])
                 tender.save()
             except IntegrityError as e:
                 print(e)
