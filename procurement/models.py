@@ -39,6 +39,9 @@ class Tender(models.Model):
     description = models.TextField()
     state = models.CharField(max_length=50)
     value = models.FloatField(default=0)
+    published = models.DateField(null=True)
+    start_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
 
     council = models.ForeignKey(Council, on_delete=models.CASCADE)
 
