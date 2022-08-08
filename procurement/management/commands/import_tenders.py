@@ -117,20 +117,21 @@ class Command(BaseCommand):
                 classification=classification,
             )
 
-            award, created = Award.objects.get_or_create(
-                uuid=row["id_award"],
-                tender=tender,
-            )
+            if not pd.isnull(row["id_award"]):
+                award, created = Award.objects.get_or_create(
+                    uuid=row["id_award"],
+                    tender=tender,
+                )
 
-            award.value = row["award_amount"]
-            if not pd.isnull(row["contractPeriod_startDate"]):
-                award.start_date = dateutil.parser.parse(
-                    row["contractPeriod_startDate"]
-                ).date()
-            if not pd.isnull(row["contractPeriod_endDate"]):
-                award.end_date = dateutil.parser.parse(
-                    row["contractPeriod_endDate"]
-                ).date()
-            if award.start_date and award.end_date:
-                award.duration = award.contract_length().days
-            award.save()
+                award.value = row["award_amount"]
+                if not pd.isnull(row["contractPeriod_startDate"]):
+                    award.start_date = dateutil.parser.parse(
+                        row["contractPeriod_startDate"]
+                    ).date()
+                if not pd.isnull(row["contractPeriod_endDate"]):
+                    award.end_date = dateutil.parser.parse(
+                        row["contractPeriod_endDate"]
+                    ).date()
+                if award.start_date and award.end_date:
+                    award.duration = award.contract_length().days
+                award.save()
