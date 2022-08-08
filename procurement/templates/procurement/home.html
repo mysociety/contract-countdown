@@ -100,7 +100,13 @@
                     <div class="progress-bar bg-danger" style="width: {{ award.contract_percent_remaining }}%"></div>
                 </div>
                 <div class="d-flex flex-wrap">
+                {% if award.contract_ended %}
+                    <strong class="mt-2 me-auto">Ended on {{ award.end_date }}</strong>
+                {% elif not award.contract_started %}
+                    <strong class="mt-2 me-auto">Starts on {{ award.start_date }}</strong>
+                {% else %}
                     <strong class="mt-2 me-auto">{{ award.contract_time_remaining_desc }}</strong>
+                {% endif %}
                     <span class="mt-2">{{ award.contract_length_desc }}</span>
                 </div>
                 {% endfor %}

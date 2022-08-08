@@ -113,6 +113,18 @@ class Award(models.Model):
 
     tender = models.ForeignKey(Tender, on_delete=models.CASCADE, related_name="awards")
 
+    def contract_current(self):
+        today = date.today()
+        return self.contract_started and not self.contract_ended
+
+    def contract_started(self):
+        today = date.today()
+        return today > self.start_date
+
+    def contract_ended(self):
+        today = date.today()
+        return today > self.end_date
+
     def contract_length(self):
         if self.end_date is None or self.start_date is None:
             return None
