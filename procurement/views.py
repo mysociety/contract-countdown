@@ -25,7 +25,7 @@ class HomePageView(FilterView):
 
     def get_queryset(self):
         qs = (
-            Tender.objects.filter(awards__value__gte=0)
+            Tender.objects.all()
             .select_related("council")
             .prefetch_related("awards")
             .order_by("value")
