@@ -14,6 +14,12 @@
                 {{ tender.description|linebreaks }}
             </div>
 
+            <div class="row gx-md-5 mt-3 mt-md-4">
+                <p>
+                Published: {{ tender.published }}
+                </p>
+            </div>
+
             <h5>Classifications</h5>
             <p>
             {% for classification in tender.tenderclassification.all %}
@@ -56,7 +62,7 @@
                 state: {{ tender.state }}
                 <p>
                 {% if tender.state == 'active' %}
-                    This contract has yet to be awarded. The tender process ends on DATE.
+                    This contract has yet to be awarded. The tender process ends on {{ tender.end_date }}.
                 {% elif tender.state == 'cancelled' %}
                     This contract was cancelled.
                 {% elif tender.state == 'unsuccesful' %}
