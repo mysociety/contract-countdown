@@ -29,6 +29,12 @@ Due to a bug, you currently need to create an empty directory at `data/procureme
     mkdir procurement_data
     cd ../
 
+The first time round you should run:
+
+    ./manage.py import_councils
+
+which will make sure there's a complete list of UK councils in the app.
+
 Then, still inside the shell, run:
 
     ./manage.py import_tenders
