@@ -144,7 +144,7 @@ class Award(models.Model):
         else:
             return "{} day contract".format(timedelta.days)
 
-    def contract_percent_remaining(self):
+    def contract_percent_complete(self):
         if self.start_date is None or self.end_date is None:
             return 100
 
