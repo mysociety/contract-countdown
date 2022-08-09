@@ -118,7 +118,7 @@ class Award(models.Model):
 
     def contract_current(self):
         today = date.today()
-        return self.contract_started and not self.contract_ended
+        return self.contract_started() and not self.contract_ended()
 
     def contract_started(self):
         today = date.today()
@@ -148,8 +148,11 @@ class Award(models.Model):
         if self.start_date is None or self.end_date is None:
             return 100
 
-        if self.contract_length().days == 0:
+        if self.contract_length().days == 0 or not self.contract_started():
             return 0
+
+        if self.contract_ended():
+            return 100
 
         time_since_start = date.today() - self.start_date
         return time_since_start.days / self.contract_length().days * 100
@@ -162,6 +165,11 @@ class Award(models.Model):
 
     def contract_time_remaining_desc(self):
         timedelta = self.contract_time_remaining()
+        if not self.contract_started():
+            return "Contract starts: {}".format(self.start_date.isoformat())
+        elif self.contract_ended():
+            return "Contract ends: {}".format(self.end_date.isoformat())
+
         if timedelta is None:
             if self.end_date is not None:
                 return "Contract ends: {}".format(self.end_date.ymd)
