@@ -26,14 +26,38 @@ class Command(BaseCommand):
 
     data_file = "data/procurement_data/merged.csv"
     groups_file = "data/groups.json"
+    groups = {}
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--skip_download", action="store_true", help="do not fetch data"
+        )
+        parser.add_argument(
+            "--data_file", action="store_true", help="provide alternative data file"
+        )
+        parser.add_argument(
+            "--groups_file", action="store_true", help="provide alternative groups file"
+        )
 
     def handle(self, *args, **options):
         self.options = options
 
+        if not options["skip_download"]:
+            self.get_files()
+
+        if options["skip_download"] and options["data_file"]:
+            self.data_file = options["data_file"]
+
+        if options["groups_file"]:
+            self.groups_file = options["groups_file"]
+
         self.get_groups()
+
         self.import_tenders()
 
     def get_files(self):
+        if self.options["verbosity"] > 1:
+            print("fetching data")
         r = requests.get(settings.PROCUREMENT_DATA)
         with open(self.data_file, "wb") as out:
             out.write(r.content)
@@ -54,8 +78,8 @@ class Command(BaseCommand):
         return None
 
     def import_tenders(self):
-        self.get_files()
-        print("opening csv file")
+        if self.options["verbosity"] > 1:
+            print("opening csv file: {}".format(self.data_file))
         df = pd.read_csv(self.data_file)
 
         for index, row in df.iterrows():
