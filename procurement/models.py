@@ -12,8 +12,8 @@ class Council(models.Model):
     updated_at = models.DateField(auto_now=True)
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200)
-    authority_code = models.CharField(max_length=4, unique=True)
-    gss_code = models.CharField(max_length=9, blank=True, unique=True)
+    authority_code = models.CharField(max_length=5, unique=True)
+    gss_code = models.CharField(max_length=9, blank=True)
 
     class Meta:
         ordering = ["name"]
