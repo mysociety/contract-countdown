@@ -85,6 +85,8 @@ class TenderFilter(filters.FilterSet):
         to_field_name="group",
     )
 
+    state = filters.AllValuesFilter()
+
     sort = filters.OrderingFilter(
         label="Sort by",
         fields=(
