@@ -36,6 +36,7 @@ class HomePageView(FilterView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["page_title"] = "Contract Countdown"
+        context["all_councils"] = Council.objects.all()
 
         today = date.today()
         months = (6, 12, 18, 24)

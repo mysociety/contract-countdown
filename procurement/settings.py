@@ -141,6 +141,7 @@ STATICFILES_DIRS = [
     ("bootstrap", BASE_DIR / "vendor" / "bootstrap" / "js"),
     ("underscore", BASE_DIR / "vendor" / "underscore" / "js"),
     ("jquery", BASE_DIR / "vendor" / "jquery" / "js"),
+    ("awesomplete", BASE_DIR / "vendor" / "awesomplete"),
 ]
 
 COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
