@@ -9,17 +9,18 @@
 <div class="bg-gray-100 border-top py-4 py-md-5">
     <div class="container" style="max-width: 44em">
 
-        <form class="row" action="{% url 'location_results' %}">
+        <form class="row" action="" method="GET">
             <fieldset class="col-sm-auto me-auto">
                 <label for="council-search" class="form-label">Search by postcode or council name</label>
                 <div class="search-input">
                     <!-- { % include icons/search.html %} -->
-                    <input type="search" name="pc" id="council-search" class="form-control">
+                    <input type="search" name="pc" id="council-search" class="form-control" value="{{ filter.form.pc.value }}">
                 </div>
             </fieldset>
-        </form>
 
         {% include 'procurement/includes/tender_filter.html' %}
+        </form>
+
         {% include 'procurement/includes/tender_list.html' %}
     </div>
 </div>

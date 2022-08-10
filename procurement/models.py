@@ -6,6 +6,14 @@ from django.utils.text import slugify
 
 import django_filters as filters
 
+from procurement.mapit import (
+    MapIt,
+    NotFoundException,
+    BadRequestException,
+    InternalServerErrorException,
+    ForbiddenException,
+)
+
 
 class Council(models.Model):
     created_at = models.DateField(auto_now_add=True)
@@ -85,6 +93,11 @@ class TenderFilter(filters.FilterSet):
         to_field_name="group",
     )
 
+    pc = filters.CharFilter(
+        field_name="council__gss_code",
+        method="filter_postcode",
+    )
+
     state = filters.AllValuesFilter()
 
     sort = filters.OrderingFilter(
@@ -100,6 +113,25 @@ class TenderFilter(filters.FilterSet):
             "time_remaining": "Contact Remaining",
         },
     )
+
+    def filter_postcode(self, queryset, name, value):
+        mapit = MapIt()
+
+        gss_codes = None
+        try:
+            gss_codes = mapit.postcode_point_to_gss_codes(value)
+        except (
+            NotFoundException,
+            BadRequestException,
+            InternalServerErrorException,
+            ForbiddenException,
+        ) as error:
+            pass
+
+        if gss_codes is not None:
+            return queryset.filter(**{"council__gss_code__in": gss_codes})
+
+        return queryset
 
     class Meta:
         model = Tender
