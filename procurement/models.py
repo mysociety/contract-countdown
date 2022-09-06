@@ -22,6 +22,8 @@ class Council(models.Model):
     slug = models.SlugField(max_length=200)
     authority_code = models.CharField(max_length=5, unique=True)
     gss_code = models.CharField(max_length=9, blank=True)
+    nation = models.CharField(max_length=16)
+    region = models.CharField(max_length=24)
 
     class Meta:
         ordering = ["name"]

@@ -58,5 +58,7 @@ class Command(BaseCommand):
                     slug=Council.slugify_name(row["official-name"]),
                     authority_code=row["local-authority-code"],
                     gss_code=row["gss-code"],
+                    nation=row["nation"],
+                    region=row["region"]
                 )
                 council.save()
