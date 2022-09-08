@@ -7,7 +7,8 @@ from django.views.generic import ListView, TemplateView, DetailView
 
 from django_filters.views import FilterView
 
-from procurement.models import Council, Tender, TenderFilter
+from procurement.models import Council, Tender
+from procurement.filters import TenderFilter
 from procurement.mapit import (
     MapIt,
     NotFoundException,
