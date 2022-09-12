@@ -99,3 +99,28 @@ class ContractDetailView(DetailView):
         slug = unquote(self.kwargs[self.slug_url_kwarg])
         obj = get_object_or_404(Tender, uuid=slug)
         return obj
+
+class EmailAlertView(FilterView):
+    paginate_by = 20
+    context_object_name = "tenders"
+    filterset_class = TenderFilter
+    template_name = "procurement/emails.html"
+
+    def get_queryset(self):
+        qs = (
+            Tender.objects.all()
+            .select_related("council")
+            .prefetch_related("awards")
+            .order_by("value")
+        )
+
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if context["filter"].form["classification"].value():
+            context["classifications"] = (
+                context["filter"].form["classification"].value()
+            )
+        return context
