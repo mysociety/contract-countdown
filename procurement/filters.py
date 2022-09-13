@@ -1,4 +1,5 @@
 import django_filters as filters
+import django.forms as forms
 
 from procurement.mapit import (
     MapIt,
@@ -7,7 +8,7 @@ from procurement.mapit import (
     InternalServerErrorException,
     ForbiddenException,
 )
-from procurement.models import Classification, Tender
+from procurement.models import Classification, Council, Tender
 
 class TenderFilter(filters.FilterSet):
     awards__end_date = filters.DateFromToRangeFilter()
@@ -15,11 +16,17 @@ class TenderFilter(filters.FilterSet):
         field_name="tenderclassification__classification__group",
         queryset=Classification.objects.all().distinct("group"),
         to_field_name="group",
+        widget=forms.CheckboxSelectMultiple()
     )
 
     pc = filters.CharFilter(
         field_name="council__gss_code",
         method="filter_postcode",
+    )
+
+    council = filters.ModelMultipleChoiceFilter(
+        field_name="council__name",
+        queryset=Council.objects.all().distinct("name"),
     )
 
     state = filters.AllValuesFilter()

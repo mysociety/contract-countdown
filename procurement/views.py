@@ -116,11 +116,4 @@ class EmailAlertView(FilterView):
 
         return qs
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        if context["filter"].form["classification"].value():
-            context["classifications"] = (
-                context["filter"].form["classification"].value()
-            )
         return context

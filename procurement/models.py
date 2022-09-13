@@ -69,6 +69,9 @@ class Classification(models.Model):
     classification_scheme = models.CharField(max_length=200)
     group = models.CharField(max_length=300, blank=True, null=True)
 
+    def __str__(self):
+        return str(self.group)
+
 
 class TenderClassification(models.Model):
     tender = models.ForeignKey(

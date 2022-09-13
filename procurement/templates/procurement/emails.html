@@ -14,88 +14,10 @@
             <p class="text-center">We will email you 18, 12, 6, and 3 months before a council contract expires, as well as on the day of expiry.</p>
         </div>
 
-        <form class="mt-4 mt-md-5 p-3 p-md-4 bg-body border rounded">
-
-            <div class="row mb-3">
-                <fieldset class="col-sm-6">
-                    <legend class="form-label" style="font-size: 1em; float: none;">I’m interested in contracts from</legend>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" value="" name="source" id="source-1" checked>
-                        <label class="form-check-label" for="source-1">All UK councils</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" value="" name="source" id="source-2">
-                        <label class="form-check-label" for="source-2">Councils in a region…</label>
-                    </div>
-                    <div class="ms-4 me-3 mt-2 mb-3" name="source" data-show-when-checked="source-2">
-                        <label class="form-label visually-hidden" for="region">Region</label>
-                        <select class="form-select" id="region" name="source">
-                            <optgroup label="Regions of the UK">
-                                <option>England</option>
-                                <option>Scotland</option>
-                                <option>Northern Ireland</option>
-                                <option>Wales</option>
-                            </optgroup>
-                            <optgroup label="Regions of England">
-                                <option>North East</option>
-                                <option>North West</option>
-                                <option>Yorkshire and The Humber</option>
-                                <option>East Midlands</option>
-                                <option>West Midlands</option>
-                                <option>East of England</option>
-                                <option>London</option>
-                                <option>South East</option>
-                                <option>South West</option>
-                            </optgroup>
-                        </select>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" name="source" type="radio" value="" id="source-3">
-                        <label class="form-check-label" for="source-3">My council…</label>
-                    </div>
-                    <div class="ms-4 me-3 mt-2 mb-3" data-show-when-checked="source-3">
-                        <label class="form-label visually-hidden" for="search">Council name or postcode</label>
-                        <div class="search-input">
-                            <input type="text" class="form-control" id="search" name="source">
-                        </div>
-                    </div>
-                </fieldset>
-                <fieldset class="col-sm-6">
-                    <legend class="form-label" style="font-size: 1em; float: none;">In only these categories</legend>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="category-1" name="category" checked>
-                        <label class="form-check-label" for="category-1">Fuel &amp; energy</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="category-2" name="category" checked>
-                        <label class="form-check-label" for="category-2">Refuse &amp; waste</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="category-3" name="category" checked>
-                        <label class="form-check-label" for="category-3">Sewage</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="category-4" name="category" checked>
-                        <label class="form-check-label" for="category-4">Catering</label>
-                    </div>
-                    <p><a href="#">Why these categories?</a></p>
-                </fieldset>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label" for="email">Email address</label>
-                <input type="email" id="email" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="frequency">How often do you want to be alerted?</label>
-                <select class="form-select" id="fruequency" name="frequency">
-                    <option>Daily</option>
-                    <option>Weekly</option>
-                    <option>Monthly</option>
-                </select>
-            </div>
-            <button type="button" class="btn btn-primary">Set up email alert</button>
-
+       <form method="get">
+        {{ filter.form.classification }}
+        {{ filter.form.council }}
+        <input type="submit">
         </form>
 
         <div style="height: 5rem"></div>
