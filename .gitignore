@@ -33,7 +33,7 @@ _env/
 _env3/
 conf/config.py
 DS_Store
-data
+/data
 .env
 /src
 
