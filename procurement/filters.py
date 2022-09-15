@@ -1,3 +1,5 @@
+import datetime
+
 import django_filters as filters
 import django.forms as forms
 
@@ -24,9 +26,21 @@ class TenderFilter(filters.FilterSet):
         method="filter_postcode",
     )
 
-    council = filters.ModelMultipleChoiceFilter(
+    council_exact = filters.ModelChoiceFilter(
         field_name="council__name",
         queryset=Council.objects.all().distinct("name"),
+        widget=forms.TextInput(attrs={
+            "class": "form-control",
+            "id": "search"
+        })
+    )
+
+    region = filters.ChoiceFilter(
+        field_name="council__region",
+        choices=(("Regions of the UK", (Council.COUNTRY_CHOICES)), ("Regions of England", (Council.REGION_CHOICES))),
+        method="filter_region",
+        widget=forms.Select(attrs={"class":"form-select",
+                                    "id": "region"})
     )
 
     state = filters.AllValuesFilter()
@@ -43,6 +57,13 @@ class TenderFilter(filters.FilterSet):
             "contract_length": "Contact Length",
             "time_remaining": "Contact Remaining",
         },
+    )
+
+    notification_frequency = filters.ChoiceFilter(
+        field_name="tender__published",
+        choices=((1, "Daily"), (7, "Weekly"), (30, "Monthly")),
+        widget=forms.Select(attrs={"class":"form-select",
+                                    "id": "frequency"})
     )
 
     def filter_postcode(self, queryset, name, value):
@@ -64,6 +85,20 @@ class TenderFilter(filters.FilterSet):
 
         return queryset
 
+    def filter_region(self, queryset, name, value):
+        countries = [x[0] for x in Council.COUNTRY_CHOICES]
+        # TODO: Wales + Scotland
+        if value in countries:
+            return queryset.filter(**{"council__nation": value})
+        else:
+            return queryset.filter(**{"council__region": value})
+
+    def filter_notification_frequency(self, queryset, name, value):
+        today = datetime.date.today()
+        difference = datetime.timedelta(days=value)
+        new_value = today - difference
+
+        return queryset.filter(**{"published__gte": new_value})
     class Meta:
         model = Tender
         fields = ["awards__end_date", "classification"]

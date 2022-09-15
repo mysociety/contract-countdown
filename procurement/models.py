@@ -6,6 +6,26 @@ from django.utils.text import slugify
 
 
 class Council(models.Model):
+    
+    COUNTRY_CHOICES = [
+        ("England", "England"),
+        ("Scotland", "Scotland"),
+        ("Wales", "Wales"),
+        ("Northern Ireland", "Northern Ireland"),
+    ]
+
+    REGION_CHOICES = [
+        ("East Midlands", "East Midlands"),
+        ("East of England", "East of England"),
+        ("London", "London"),
+        ("North East", "North East"),
+        ("North West", "North West"),
+        ("South East", "South East"),
+        ("South West", "South West"),
+        ("West Midlands", "West Midlands"),
+        ("Yorkshire and The Humber", "Yorkshire and The Humber"),
+    ]
+
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
     name = models.CharField(max_length=200)
