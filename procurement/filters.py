@@ -36,7 +36,6 @@ class TenderFilter(filters.FilterSet):
     )
 
     region = filters.ChoiceFilter(
-        field_name="council__region",
         choices=(("Regions of the UK", (Council.COUNTRY_CHOICES)), ("Regions of England", (Council.REGION_CHOICES))),
         method="filter_region",
         widget=forms.Select(attrs={"class":"form-select",
@@ -60,7 +59,8 @@ class TenderFilter(filters.FilterSet):
     )
 
     notification_frequency = filters.ChoiceFilter(
-        field_name="tender__published",
+        field_name="published",
+        method="filter_notification_frequency",
         choices=((1, "Daily"), (7, "Weekly"), (30, "Monthly")),
         widget=forms.Select(attrs={"class":"form-select",
                                     "id": "frequency"})
@@ -89,15 +89,15 @@ class TenderFilter(filters.FilterSet):
         countries = [x[0] for x in Council.COUNTRY_CHOICES]
         # TODO: Wales + Scotland
         if value in countries:
-            return queryset.filter(**{"council__nation": value})
+            print(queryset.filter(council__nation=value))
+            return queryset.filter(council__nation=value)
         else:
             return queryset.filter(**{"council__region": value})
 
     def filter_notification_frequency(self, queryset, name, value):
         today = datetime.date.today()
-        difference = datetime.timedelta(days=value)
+        difference = datetime.timedelta(days=int(value))
         new_value = today - difference
-
         return queryset.filter(**{"published__gte": new_value})
     class Meta:
         model = Tender
