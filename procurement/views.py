@@ -106,6 +106,11 @@ class EmailAlertView(FilterView):
     filterset_class = TenderFilter
     template_name = "procurement/emails.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "Email Alerts"
+        return context
+
     def get_queryset(self):
         qs = (
             Tender.objects.all()
@@ -115,5 +120,3 @@ class EmailAlertView(FilterView):
         )
 
         return qs
-
-        return context

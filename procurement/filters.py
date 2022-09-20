@@ -16,7 +16,7 @@ class TenderFilter(filters.FilterSet):
     awards__end_date = filters.DateFromToRangeFilter()
     classification = filters.ModelMultipleChoiceFilter(
         field_name="tenderclassification__classification__group",
-        queryset=Classification.objects.all().distinct("group"),
+        queryset=Classification.objects.all().distinct("group").exclude(group=None),
         to_field_name="group",
         widget=forms.CheckboxSelectMultiple()
     )
