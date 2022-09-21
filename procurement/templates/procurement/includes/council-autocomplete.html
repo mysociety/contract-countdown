@@ -1,0 +1,22 @@
+{% load static %}
+
+<script src="{% static 'awesomplete/awesomplete.min.js' %}"></script>
+<script>
+
+var councils = [
+  {% for council in all_councils %}
+    "{{ council.name }}",
+  {% endfor %}
+];
+
+var $council_search = $('#council-search');
+var ac = new Awesomplete(
+    $council_search[0],
+    {
+        list: councils,
+        minChars: 3,
+        autoFirst: true
+    }
+);
+
+</script>
