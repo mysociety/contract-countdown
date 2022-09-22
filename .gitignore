@@ -33,9 +33,11 @@ _env/
 _env3/
 conf/config.py
 DS_Store
-/data
 .env
 /src
+
+/data/procurement_data
+/data/cache.sqlite
 
 # Deployment
 conf/env.sh
