@@ -1,0 +1,17 @@
+
+.tender-card {
+    h2 {
+        font-size: 1.4rem;
+        a {
+            text-decoration: none;
+            &:hover, &:active {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+#advanced-filter-wrapper {
+    margin-right: 0;
+    margin-left: 0;
+}

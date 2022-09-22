@@ -1,59 +1,72 @@
 {% load django_bootstrap5 %}
 
-            <fieldset class="col-sm-auto">
-                {% bootstrap_field filter.form.sort %}
-                <input type="submit">
-            </fieldset>
+<div class="row">
+    <div class="col-sm-auto me-auto">
+        <label for="council-search" class="form-label">Search by postcode or council name</label>
+        <div class="search-input">
+            {% include 'procurement/icons/search.html' with classes='mr-2 flex-grow-0 flex-shrink-0' width='1.25em' height='1.25em' role='presentation' %}
+            <input type="search" name="pc" id="council-search" class="form-control" value="{{ filter.form.pc.value|default_if_none:"" }}">
+        </div>
+    </div>
 
-        <details>
-            <summary class="my-3 my-md-4 text-center">More filters</summary>
-            <div class="row">
-                <fieldset class="col-sm-6">
-                    <legend class="form-label" style="font-size: 1em; float: none;">Categories</legend>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="Fuel" id="category-1" name="classification"{% if "Fuel" in classifications %} checked{% endif %}>
-                        <label class="form-check-label" for="category-1">Fuel &amp; energy</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="Refuse" id="category-2" name="classification"{% if "Refuse" in classifications %} checked{% endif %}>
-                        <label class="form-check-label" for="category-2">Refuse &amp; waste</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="Sewage" id="category-3" name="classification"{% if "Sewage" in classifications %} checked{% endif %}>
-                        <label class="form-check-label" for="category-3">Sewage</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="Catering" id="category-4" name="classification"{% if "Catering" in classifications %} checked{% endif %}>
-                        <label class="form-check-label" for="category-4">Catering</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="Construction work" id="category-5" name="classification"{% if "Construction work" in classifications %} checked{% endif %}>
-                        <label class="form-check-label" for="category-5">Construction Work</label>
-                    </div>
-                    <p><a href="#">Why these categories?</a></p>
-                </fieldset>
-                <fieldset class="col-sm-6">
-                    <legend class="form-label" style="font-size: 1em; float: none;">Show contracts with</legend>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" value="" name="awards__end_date_after" id="limit-any" checked>
-                        <label class="form-check-label" for="limit-any">any time left</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" value="{{ 6_months }}" name="awards__end_date_after" id="limit-6"{% if filter_end_date == 6_months %} checked{% endif %}>
-                        <label class="form-check-label" for="limit-6">at least 6 months left</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" value="{{ 12_months }}" name="awards__end_date_after" id="limit-12"{% if filter_end_date == 12_months %} checked{% endif %}>
-                        <label class="form-check-label" for="limit-12">at least 12 months left</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" value="{{ 18_months }}" name="awards__end_date"_after id="limit-18"{% if filter_end_date == 18_months %} checked{% endif %}>
-                        <label class="form-check-label" for="limit-18">at least 18 months left</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" value="{{ 24_months }}" name="awards__end_date_after" id="limit-24"{% if filter_end_date == 24_months %} checked{% endif %}>
-                        <label class="form-check-label" for="limit-24">at least 24 months left</label>
-                    </div>
-                </fieldset>
+    <div class="col-sm-auto form-sort-by">
+        {% bootstrap_field filter.form.sort %}
+    </div>
+
+    <div class="col-sm-auto d-flex align-items-end">
+        <input class="btn btn-primary mb-3" type="submit" value="Filter">
+    </div>
+</div>
+
+<details class="mt-3 mt-md-2">
+    <summary class="mb-3 mt-3 btn btn-outline-primary" style="max-width:9em">More filters</summary>
+    <div id="advanced-filter-wrapper" class="row border py-3 bg-body rounded">
+        <fieldset class="col-sm-6">
+            <legend class="form-label" style="font-size: 1em; float: none;">Categories</legend>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Fuel" id="category-1" name="classification"{% if "Fuel" in classifications %} checked{% endif %}>
+                <label class="form-check-label" for="category-1">Fuel &amp; energy</label>
             </div>
-        </details>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Refuse" id="category-2" name="classification"{% if "Refuse" in classifications %} checked{% endif %}>
+                <label class="form-check-label" for="category-2">Refuse &amp; waste</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Sewage" id="category-3" name="classification"{% if "Sewage" in classifications %} checked{% endif %}>
+                <label class="form-check-label" for="category-3">Sewage</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Catering" id="category-4" name="classification"{% if "Catering" in classifications %} checked{% endif %}>
+                <label class="form-check-label" for="category-4">Catering</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Construction work" id="category-5" name="classification"{% if "Construction work" in classifications %} checked{% endif %}>
+                <label class="form-check-label" for="category-5">Construction Work</label>
+            </div>
+            <small class="mb-0 mt-2"><a href="#">Why these categories?</a></small>
+        </fieldset>
+        <fieldset class="col-sm-6">
+            <legend class="form-label" style="font-size: 1em; float: none;">Show contracts with</legend>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="" name="awards__end_date_after" id="limit-any" checked>
+                <label class="form-check-label" for="limit-any">any time left</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="{{ 6_months }}" name="awards__end_date_after" id="limit-6"{% if filter_end_date == 6_months %} checked{% endif %}>
+                <label class="form-check-label" for="limit-6">at least 6 months left</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="{{ 12_months }}" name="awards__end_date_after" id="limit-12"{% if filter_end_date == 12_months %} checked{% endif %}>
+                <label class="form-check-label" for="limit-12">at least 12 months left</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="{{ 18_months }}" name="awards__end_date"_after id="limit-18"{% if filter_end_date == 18_months %} checked{% endif %}>
+                <label class="form-check-label" for="limit-18">at least 18 months left</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="{{ 24_months }}" name="awards__end_date_after" id="limit-24"{% if filter_end_date == 24_months %} checked{% endif %}>
+                <label class="form-check-label" for="limit-24">at least 24 months left</label>
+            </div>
+        </fieldset>
+    </div>
+</details>

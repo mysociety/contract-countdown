@@ -1,0 +1,15 @@
+.form-group {
+    margin-right: 1rem;
+    margin-top: 1rem;
+    label {
+        margin-bottom: 0.5em;
+    }
+}
+
+summary.btn {
+    display: list-item; // rather than inline-block, to get the browser’s default "toggle" triangle back
+}
+
+.form-sort-by .form-select {
+    max-width: 14em;
+}
