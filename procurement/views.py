@@ -9,6 +9,7 @@ from django_filters.views import FilterView
 
 from procurement.models import Council, Tender
 from procurement.filters import TenderFilter
+from procurement.forms import CouncilChoiceAlertForm
 from procurement.mapit import (
     MapIt,
     NotFoundException,
@@ -110,6 +111,16 @@ class EmailAlertView(FilterView):
         context = super().get_context_data(**kwargs)
         context["page_title"] = "Email Alerts"
         context["all_councils"] = Council.objects.all()
+
+        context["council_choice_form"] = CouncilChoiceAlertForm(self.request.GET)
+        if self.request.GET.get("source"):
+            context["council_choice"] = self.request.GET.get("source")
+  
+
+        if context["filter"].form["classification"].value():
+            context["classifications"] = (
+                context["filter"].form["classification"].value()
+            )
 
         return context
 

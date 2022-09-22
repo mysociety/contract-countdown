@@ -27,12 +27,10 @@ class TenderFilter(filters.FilterSet):
     )
 
     council_exact = filters.ModelChoiceFilter(
-        field_name="council__name",
         queryset=Council.objects.all().distinct("name"),
-        widget=forms.TextInput(attrs={
-            "class": "form-control",
-            "id": "search"
-        })
+        field_name="council__name",
+        to_field_name="name",
+        widget=forms.TextInput(attrs={"type":"search", "name": "council_exact", "id": "council_exact", "class": "form-control"})
     )
 
     region = filters.ChoiceFilter(
@@ -89,10 +87,10 @@ class TenderFilter(filters.FilterSet):
         countries = [x[0] for x in Council.COUNTRY_CHOICES]
         # TODO: Wales + Scotland
         if value in countries:
-            print(queryset.filter(council__nation=value))
             return queryset.filter(council__nation=value)
         else:
             return queryset.filter(**{"council__region": value})
+
 
     def filter_notification_frequency(self, queryset, name, value):
         today = datetime.date.today()
