@@ -19,6 +19,8 @@ Start the Docker environment:
 
     docker-compose up
 
+(If Python complains about missing libraries, chances are the Python requirements have changed since your Docker image was last built. You can rebuild it with, eg: `docker-compose build web`.)
+
 To load contracts data, get a bash shell inside the `web` container:
 
     docker-compose exec web bash
