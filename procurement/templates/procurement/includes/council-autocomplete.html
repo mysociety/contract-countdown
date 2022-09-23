@@ -9,9 +9,9 @@ var councils = [
   {% endfor %}
 ];
 
-var $council_search = $('#council-search');
+var $council_exact = $('#council_exact');
 var ac = new Awesomplete(
-    $council_search[0],
+    $council_exact[0],
     {
         list: councils,
         minChars: 3,
