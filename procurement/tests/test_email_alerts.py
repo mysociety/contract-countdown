@@ -55,10 +55,9 @@ class TestEmailAlerts(TestCase):
             description="This is a test tender!",
             state="This is a test state",
             value=10000,
-            published=now-dt.timedelta(days=1),
             start_date=dt.datetime(year=2022, month=12, day=1),
-            end_date=dt.datetime(year=2022, month=12, day=31),
-            council=Council.objects.get(name="Shropshire Council")
+            end_date=now + dt.timedelta(days=20*30),
+            council=Council.objects.get(name="Shropshire Council"),
         )
 
         Tender.objects.create(
@@ -67,10 +66,8 @@ class TestEmailAlerts(TestCase):
             description="This is a test tender!",
             state="This is a test state",
             value=10000,
-            published=now-dt.timedelta(hours=4),
             start_date=dt.datetime(year=2022, month=12, day=1),
-            end_date=dt.datetime(year=2022, month=12, day=31),
-            council=Council.objects.get(name="Shropshire Council")
+            council=Council.objects.get(name="Shropshire Council"),
         )
 
         Tender.objects.create(
@@ -79,10 +76,9 @@ class TestEmailAlerts(TestCase):
             description="This is a test tender!",
             state="This is a test state",
             value=10000,
-            published=now-dt.timedelta(days=5),
             start_date=dt.datetime(year=2022, month=12, day=1),
-            end_date=dt.datetime(year=2022, month=12, day=31),
-            council=Council.objects.get(name="Ceredigion County Council")
+            end_date=now + dt.timedelta(days = 3*30),
+            council=Council.objects.get(name="Ceredigion County Council"),
         )
 
         Tender.objects.create(
@@ -91,10 +87,9 @@ class TestEmailAlerts(TestCase):
             description="This is a test tender!",
             state="This is a test state",
             value=10000,
-            published=now-dt.timedelta(days=12),
             start_date=dt.datetime(year=2022, month=12, day=1),
-            end_date=dt.datetime(year=2022, month=12, day=31),
-            council=Council.objects.get(name="Aberdeenshire Council")
+            end_date=now + dt.timedelta(days=67),
+            council=Council.objects.get(name="Aberdeenshire Council"),
         )
 
         Tender.objects.create(
@@ -103,10 +98,9 @@ class TestEmailAlerts(TestCase):
             description="This is a test tender!",
             state="This is a test state",
             value=10000,
-            published=now-dt.timedelta(days=14),
             start_date=dt.datetime(year=2022, month=12, day=1),
-            end_date=dt.datetime(year=2022, month=12, day=31),
-            council=Council.objects.get(name="Bristol City Council")
+            end_date=now + dt.timedelta(days=6*30),
+            council=Council.objects.get(name="Bristol City Council"),
         )
 
         Classification.objects.create(
@@ -169,20 +163,35 @@ class TestEmailAlerts(TestCase):
         qs = Tender.objects.all()
         f = TenderFilter(data={'notification_frequency': 1}, queryset=qs)
         result = f.qs
-        self.assertQuerysetEqual(result, list(Tender.objects.all().filter(uuid__in=["ABC1", "ABC2"])), ordered=False)
-
+        self.assertQuerysetEqual(
+            result,
+            list(Tender.objects.all().filter(uuid__in=["ABC3", "ABC5"])),
+            ordered=False,
+        )
 
     def test_weeky_alerts(self):
         qs = Tender.objects.all()
         f = TenderFilter(data={'notification_frequency': 7}, queryset=qs)
         result = f.qs
-        self.assertQuerysetEqual(result, list(Tender.objects.all().filter(uuid__in=["ABC1", "ABC2", "ABC3"])), ordered=False)
+        self.assertQuerysetEqual(
+            result,
+            list(Tender.objects.all().filter(uuid__in=["ABC3", "ABC5",])),
+            ordered=False,
+        )
 
     def test_monthly_alerts(self):
         qs = Tender.objects.all()
         f = TenderFilter(data={'notification_frequency': 30}, queryset=qs)
         result = f.qs
-        self.assertQuerysetEqual(result, list(Tender.objects.all().filter(uuid__in=["ABC1", "ABC2", "ABC3", "ABC4", "ABC5"])), ordered=False)
+        self.assertQuerysetEqual(
+            result,
+            list(
+                Tender.objects.all().filter(
+                    uuid__in=["ABC3", "ABC4", "ABC5"]
+                )
+            ),
+            ordered=False,
+        )
 
     def test_one_classification(self):
         qs = Tender.objects.all()
@@ -198,12 +207,25 @@ class TestEmailAlerts(TestCase):
 
     def test_all_filters(self):
         qs = Tender.objects.all()
-        f = TenderFilter(data={'classification': ["B"], "region": "England", "notification_frequency": 7}, queryset=qs)
+        f = TenderFilter(
+            data={
+                "classification": ["B"],
+                "region": "Wales",
+                "notification_frequency": 7,
+            },
+            queryset=qs,
+        )
         result = f.qs
-        self.assertQuerysetEqual(result, list(Tender.objects.all().filter(uuid__in=["ABC1"])), ordered=False)  
+        self.assertQuerysetEqual(
+            result, list(Tender.objects.all().filter(uuid__in=["ABC3"])), ordered=False
+        )
 
     def test_some_filters(self):
         qs = Tender.objects.all()
         f = TenderFilter(data={'classification': ["B"], "notification_frequency": 7}, queryset=qs)
         result = f.qs
-        self.assertQuerysetEqual(result, list(Tender.objects.all().filter(uuid__in=["ABC1", "ABC3"])), ordered=False) 
+        self.assertQuerysetEqual(
+            result,
+            list(Tender.objects.all().filter(uuid__in=["ABC3"])),
+            ordered=False,
+        )

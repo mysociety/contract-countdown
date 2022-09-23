@@ -12,7 +12,10 @@ from procurement.mapit import (
 )
 from procurement.models import Classification, Council, Tender
 
+NOTIFICATION_MONTHS = [datetime.timedelta(days=x*30) for x in [3, 6, 12, 18]]
+
 class TenderFilter(filters.FilterSet):
+
     awards__end_date = filters.DateFromToRangeFilter()
     classification = filters.ModelMultipleChoiceFilter(
         field_name="tenderclassification__classification__group",
@@ -89,14 +92,18 @@ class TenderFilter(filters.FilterSet):
         if value in countries:
             return queryset.filter(council__nation=value)
         else:
-            return queryset.filter(**{"council__region": value})
+            return queryset.filter(council__region=value)
 
 
     def filter_notification_frequency(self, queryset, name, value):
         today = datetime.date.today()
-        difference = datetime.timedelta(days=int(value))
-        new_value = today - difference
-        return queryset.filter(**{"published__gte": new_value})
+        days_in_timeframe = [today - datetime.timedelta(days=i) for i in range(int(value) + 1)]
+        possible_end_dates = []
+        for day in days_in_timeframe:
+            for future_day in NOTIFICATION_MONTHS:
+                possible_end_dates.append(day + future_day)
+        return queryset.filter(end_date__in=possible_end_dates)
+
     class Meta:
         model = Tender
         fields = ["awards__end_date", "classification"]
