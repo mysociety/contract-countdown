@@ -8,7 +8,11 @@ from django.views.generic import ListView, TemplateView, DetailView
 from django_filters.views import FilterView
 
 from procurement.models import Council, Tender
-from procurement.filters import TenderFilter
+from procurement.filters import (
+    CouncilDetailPageTenderFilter,
+    EmailAlertPageTenderFilter,
+    HomePageTenderFilter,
+)
 from procurement.forms import CouncilChoiceAlertForm
 from procurement.mapit import (
     MapIt,
@@ -23,7 +27,7 @@ class HomePageView(FilterView):
     paginate_by = 20
     context_object_name = "tenders"
     template_name = "procurement/home.html"
-    filterset_class = TenderFilter
+    filterset_class = HomePageTenderFilter
 
     def get_queryset(self):
         qs = (
@@ -62,7 +66,7 @@ class HomePageView(FilterView):
 class CouncilContractsView(FilterView):
     paginate_by = 20
     context_object_name = "tenders"
-    filterset_class = TenderFilter
+    filterset_class = CouncilDetailPageTenderFilter
     template_name = "procurement/council_detail.html"
 
     def get_queryset(self):
@@ -104,7 +108,7 @@ class ContractDetailView(DetailView):
 class EmailAlertView(FilterView):
     paginate_by = 20
     context_object_name = "tenders"
-    filterset_class = TenderFilter
+    filterset_class = EmailAlertPageTenderFilter
     template_name = "procurement/emails.html"
 
     def get_context_data(self, **kwargs):
@@ -115,7 +119,6 @@ class EmailAlertView(FilterView):
         context["council_choice_form"] = CouncilChoiceAlertForm(self.request.GET)
         if self.request.GET.get("source"):
             context["council_choice"] = self.request.GET.get("source")
-  
 
         if context["filter"].form["classification"].value():
             context["classifications"] = (
