@@ -2,16 +2,9 @@ import datetime
 
 import django_filters as filters
 import django.forms as forms
-from django.core.exceptions import ValidationError
 
-from procurement.mapit import (
-    MapIt,
-    NotFoundException,
-    BadRequestException,
-    InternalServerErrorException,
-    ForbiddenException,
-)
 from procurement.models import Classification, Council, Tender
+from procurement.forms import HomePageTenderForm
 
 NOTIFICATION_MONTHS = [datetime.timedelta(days=x * 30) for x in [3, 6, 12, 18]]
 
@@ -53,27 +46,18 @@ class CouncilDetailPageTenderFilter(BaseTenderFilter):
 class HomePageTenderFilter(CouncilDetailPageTenderFilter):
     pc = filters.CharFilter(
         field_name="council__gss_code",
-        method="filter_postcode",
+        lookup_expr="in",
+        widget=forms.TextInput(
+            attrs={
+                "type": "search",
+                "name": "pc",
+                "id": "council-search",
+                "class": "form-control",
+            }
+        ),
     )
-
-    def filter_postcode(self, queryset, name, value):
-        mapit = MapIt()
-
-        gss_codes = None
-        try:
-            gss_codes = mapit.postcode_point_to_gss_codes(value)
-        except (
-            NotFoundException,
-            BadRequestException,
-            InternalServerErrorException,
-            ForbiddenException,
-        ) as error:
-            pass
-
-        if gss_codes is not None:
-            return queryset.filter(**{"council__gss_code__in": gss_codes})
-
-        return queryset
+    class Meta:
+        form = HomePageTenderForm
 
 
 class EmailAlertPageTenderFilter(BaseTenderFilter):
