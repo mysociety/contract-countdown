@@ -18,26 +18,43 @@
         <div class="row mb-3">
             <fieldset class="col-sm-6">
                 <legend class="form-label" style="font-size: 1em; float: none;">I’m interested in contracts from</legend>
-                {% for choice in council_choice_form.council_choice %}
+                {% for choice in filter.form.source %}
                 <div class="form-check">
                     <input class="form-check-input" type="radio" value="{{ choice.choice_label}}" id="{{ choice.id_for_label }}" name="source"{% if council_choice == choice.choice_label %} checked="checked"{% endif %}>
                     <label class="form-check-label" for="{{ choice.id_for_label }}">
                         {{ choice.choice_label }}
                     </label>
                 </div>
-                {% if choice.id_for_label == "id_council_choice_1" %}
-                <div class="ms-4 me-3 mt-2 mb-3" data-show-when-checked="id_council_choice_1">
+                {% if choice.id_for_label == "id_source_1" %}
+                <div class="ms-4 me-3 mt-2 mb-3" data-show-when-checked="id_source_1">
                     <label class="form-label visually-hidden" for="region">Region</label>
-                    {{ filter.form.region }}
+                    <select class="form-select" id="region" name="region">
+                        <optgroup label="Regions of the UK">
+                            <option>England</option>
+                            <option>Scotland</option>
+                            <option>Northern Ireland</option>
+                            <option>Wales</option>
+                        </optgroup>
+                        <optgroup label="Regions of England">
+                            <option>North East</option>
+                            <option>North West</option>
+                            <option>Yorkshire and The Humber</option>
+                            <option>East Midlands</option>
+                            <option>West Midlands</option>
+                            <option>East of England</option>
+                            <option>London</option>
+                            <option>South East</option>
+                            <option>South West</option>
+                        </optgroup>
+                    </select>
                 </div>
                 {% endif %}
-                {% if choice.id_for_label == "id_council_choice_2" %}
-                <div class="ms-4 me-3 mt-2 mb-3" data-show-when-checked="id_council_choice_2">
-                    {{ filter.form.council_exact.errors }}
-                    <label class="form-label visually-hidden" for="search">Council name</label>
+                {% if choice.id_for_label == "id_source_2" %}
+                <div class="ms-4 me-3 mt-2 mb-3" data-show-when-checked="id_source_2">
+                    <label class="form-label visually-hidden" for="council_exact">Council name</label>
                     <div class="search-input">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512" fill="currentColor" class="" role="presentation"><path d="M500.3 443.7l-119.7-119.7c27.22-40.41 40.65-90.9 33.46-144.7C401.8 87.79 326.8 13.32 235.2 1.723C99.01-15.51-15.51 99.01 1.724 235.2c11.6 91.64 86.08 166.7 177.6 178.9c53.8 7.189 104.3-6.236 144.7-33.46l119.7 119.7c15.62 15.62 40.95 15.62 56.57 0C515.9 484.7 515.9 459.3 500.3 443.7zM79.1 208c0-70.58 57.42-128 128-128s128 57.42 128 128c0 70.58-57.42 128-128 128S79.1 278.6 79.1 208z"/></svg>
-                        {{ filter.form.council_exact }}
+                        <input type="text" class="form-control" id="council_exact" name="council_exact">
                     </div>
                 </div>
                 {% endif %}

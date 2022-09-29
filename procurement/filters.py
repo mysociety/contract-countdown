@@ -78,27 +78,16 @@ class HomePageTenderFilter(CouncilDetailPageTenderFilter):
 
 
 class EmailAlertPageTenderFilter(BaseTenderFilter):
-    council_exact = filters.ModelChoiceFilter(
-        queryset=Council.objects.all().distinct("name"),
-        field_name="council__name",
-        to_field_name="name",
-        widget=forms.TextInput(
-            attrs={
-                "type": "search",
-                "name": "council_exact",
-                "id": "council_exact",
-                "class": "form-control",
-            }
-        ),
+    source = filters.CharFilter(
+        method="filter_source",
+        widget=forms.RadioSelect(choices=(
+            ("all", "All UK councils"),
+            ("region", "Councils in a region..."),
+            ("council", "My council..."),
     )
-    region = filters.ChoiceFilter(
-        choices=(
-            ("Regions of the UK", (Council.COUNTRY_CHOICES)),
-            ("Regions of England", (Council.REGION_CHOICES)),
-        ),
-        method="filter_region",
-        widget=forms.Select(attrs={"class": "form-select", "id": "region"}),
+        )
     )
+
     notification_frequency = filters.ChoiceFilter(
         field_name="published",
         method="filter_notification_frequency",
@@ -106,13 +95,22 @@ class EmailAlertPageTenderFilter(BaseTenderFilter):
         widget=forms.Select(attrs={"class": "form-select", "id": "frequency"}),
     )
 
-    def filter_region(self, queryset, name, value):
-        countries = [x[0] for x in Council.COUNTRY_CHOICES]
-        # TODO: Wales + Scotland
-        if value in countries:
-            return queryset.filter(council__nation=value)
+    def filter_source(self, queryset, name, value):
+        print(value)
+        if value == "Councils in a region...":
+            region = self.request.GET.get("region")
+            countries = [x[0] for x in Council.COUNTRY_CHOICES]
+            # TODO: Wales + Scotland
+            if region in countries:
+                return queryset.filter(council__nation=region)
+            else:
+                return queryset.filter(council__region=region)
+        elif value == "My council...":
+            council = self.request.GET.get("council_exact")
+            return queryset.filter(council__name=council)
         else:
-            return queryset.filter(council__region=value)
+            return queryset
+
 
     def filter_notification_frequency(self, queryset, name, value):
         today = datetime.date.today()

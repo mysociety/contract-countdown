@@ -115,8 +115,6 @@ class EmailAlertView(FilterView):
         context = super().get_context_data(**kwargs)
         context["page_title"] = "Email Alerts"
         context["all_councils"] = Council.objects.all()
-
-        context["council_choice_form"] = CouncilChoiceAlertForm(self.request.GET)
         if self.request.GET.get("source"):
             context["council_choice"] = self.request.GET.get("source")
 
