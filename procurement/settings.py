@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     "django_filters",
     "compressor",
-    "bootstrap4",
+    "django_bootstrap5",
     "procurement",
 ]
 
