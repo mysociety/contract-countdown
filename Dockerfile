@@ -14,17 +14,9 @@ RUN pip install poetry==$POETRY_VERSION
 WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
 RUN poetry install --no-root
-
-FROM python:3.9-slim
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PYSETUP_PATH="/opt/pysetup" \
-    VENV_PATH="/opt/pysetup/.venv"
-ENV PATH="$VENV_PATH/bin:$PATH"
 RUN apt-get update && apt-get install -y \
     binutils gdal-bin libproj-dev git \
     && rm -rf /var/lib/apt/lists/*
-COPY --from=builder $PYSETUP_PATH $PYSETUP_PATH
 WORKDIR /app
 COPY . .
 #RUN ./manage.py collectstatic --no-input
