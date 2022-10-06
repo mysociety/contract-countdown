@@ -17,6 +17,5 @@ RUN poetry install --no-root
 RUN apt-get update && apt-get install -y \
     binutils gdal-bin libproj-dev git \
     && rm -rf /var/lib/apt/lists/*
-WORKDIR /app
-COPY . .
+WORKDIR /workspaces/contract-countdown/
 #RUN ./manage.py collectstatic --no-input
