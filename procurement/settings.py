@@ -154,6 +154,12 @@ COMPRESS_CSS_HASHING_METHOD = "content"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# django-bootstrap5 settings
+# https://django-bootstrap5.readthedocs.io/en/latest/settings.html
+BOOTSTRAP5 = {
+    'server_side_validation': False,
+}
+
 # data locations
 PROCUREMENT_DATA = "https://github.com/mysociety/procurement_data/raw/main/data/packages/procurement_data/versions/1.0.0/merged.csv"
 
