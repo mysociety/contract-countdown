@@ -8,17 +8,6 @@
 
 <div class="bg-gray-100 border-top py-4 py-md-5">
     <div class="container" style="max-width: 44em">
-
-        <form class="row" action="" method="GET">
-            <fieldset class="col-sm-auto me-auto">
-                <label for="council-search" class="form-label">Search by postcode or council name</label>
-                <div>{{ filter.form.pc.errors }}</div>
-                <div class="search-input">
-                    <!-- { % include icons/search.html %} -->
-                    {{ filter.form.pc }}
-                </div>
-            </fieldset>
-
         {% include 'procurement/includes/tender_filter.html' %}
         </form>
 

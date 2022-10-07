@@ -1,11 +1,12 @@
 {% load django_bootstrap5 %}
-
+<form method="get">
 <div class="row">
     <div class="col-sm-auto me-auto">
         <label for="council-search" class="form-label">Search by postcode or council name</label>
+        <div class="error" >{{ filter.form.pc.errors }}</div>
         <div class="search-input">
             {% include 'procurement/icons/search.html' with classes='mr-2 flex-grow-0 flex-shrink-0' width='1.25em' height='1.25em' role='presentation' %}
-            <input type="search" name="pc" id="council-search" class="form-control" value="{{ filter.form.pc.value|default_if_none:"" }}">
+            {{ filter.form.pc }}
         </div>
     </div>
 
@@ -70,3 +71,4 @@
         </fieldset>
     </div>
 </details>
+</form>

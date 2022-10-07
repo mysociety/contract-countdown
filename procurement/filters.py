@@ -24,8 +24,7 @@ class BaseTenderFilter(filters.FilterSet):
         fields = ["classification"]
 
 
-class CouncilDetailPageTenderFilter(BaseTenderFilter):
-
+class HomePageTenderFilter(BaseTenderFilter):
     state = filters.AllValuesFilter()
 
     sort = filters.OrderingFilter(
@@ -41,9 +40,6 @@ class CouncilDetailPageTenderFilter(BaseTenderFilter):
             "time_remaining": "Contact Remaining",
         },
     )
-
-
-class HomePageTenderFilter(CouncilDetailPageTenderFilter):
     pc = filters.CharFilter(
         field_name="council__gss_code",
         lookup_expr="in",

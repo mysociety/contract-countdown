@@ -9,7 +9,6 @@ from django_filters.views import FilterView
 
 from procurement.models import Council, Tender
 from procurement.filters import (
-    CouncilDetailPageTenderFilter,
     EmailAlertPageTenderFilter,
     HomePageTenderFilter,
 )
@@ -66,7 +65,7 @@ class HomePageView(FilterView):
 class CouncilContractsView(FilterView):
     paginate_by = 20
     context_object_name = "tenders"
-    filterset_class = CouncilDetailPageTenderFilter
+    filterset_class = HomePageTenderFilter
     template_name = "procurement/council_detail.html"
 
     def get_queryset(self):
