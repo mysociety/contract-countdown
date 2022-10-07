@@ -128,6 +128,7 @@ class EmailAlertView(FilterView):
     def get_queryset(self):
         qs = (
             Tender.objects.all()
+            .filter(state="complete")
             .select_related("council")
             .prefetch_related("awards")
             .order_by("value")
