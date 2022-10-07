@@ -6,7 +6,7 @@ from django.utils.text import slugify
 
 
 class Council(models.Model):
-    
+
     COUNTRY_CHOICES = [
         ("England", "England"),
         ("Scotland", "Scotland"),
@@ -79,9 +79,10 @@ class Tender(models.Model):
     emissions scope
     emissions amount
     """
+
     def __str__(self):
         return str(self.uuid)
-        
+
     def uuid_url_safe(self):
         return quote(self.uuid, safe="")
 

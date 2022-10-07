@@ -157,7 +157,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # django-bootstrap5 settings
 # https://django-bootstrap5.readthedocs.io/en/latest/settings.html
 BOOTSTRAP5 = {
-    'server_side_validation': False,
+    "server_side_validation": False,
 }
 
 # data locations

@@ -105,6 +105,7 @@ class ContractDetailView(DetailView):
         obj = get_object_or_404(Tender, uuid=slug)
         return obj
 
+
 class EmailAlertView(FilterView):
     paginate_by = 20
     context_object_name = "tenders"

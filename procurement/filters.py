@@ -21,7 +21,7 @@ class BaseTenderFilter(filters.FilterSet):
         field_name="tenderclassification__classification__group",
         queryset=Classification.objects.all().distinct("group").exclude(group=None),
         to_field_name="group",
-        widget=forms.CheckboxSelectMultiple()
+        widget=forms.CheckboxSelectMultiple(),
     )
 
     awards__end_date = filters.DateFromToRangeFilter()
@@ -74,18 +74,18 @@ class HomePageTenderFilter(CouncilDetailPageTenderFilter):
             return queryset.filter(**{"council__gss_code__in": gss_codes})
 
         return queryset
-    
 
 
 class EmailAlertPageTenderFilter(BaseTenderFilter):
     source = filters.CharFilter(
         method="filter_source",
-        widget=forms.RadioSelect(choices=(
-            ("all", "All UK councils"),
-            ("region", "Councils in a region..."),
-            ("council", "My council..."),
-    )
-        )
+        widget=forms.RadioSelect(
+            choices=(
+                ("all", "All UK councils"),
+                ("region", "Councils in a region..."),
+                ("council", "My council..."),
+            )
+        ),
     )
 
     notification_frequency = filters.ChoiceFilter(
@@ -110,7 +110,6 @@ class EmailAlertPageTenderFilter(BaseTenderFilter):
             return queryset.filter(council__name=council)
         else:
             return queryset
-
 
     def filter_notification_frequency(self, queryset, name, value):
         today = datetime.date.today()
