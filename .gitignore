@@ -40,6 +40,11 @@ DS_Store
 /data/cache.sqlite
 
 # Deployment
+.venv/
+conf/env
+conf/env.deployed
+conf/httpd.conf
+conf/httpd.conf.deployed
 conf/env.sh
 conf/env.sh.deployed
 conf/stack.yml
