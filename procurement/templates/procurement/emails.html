@@ -30,21 +30,21 @@
                     <label class="form-label visually-hidden" for="region">Region</label>
                     <select class="form-select" id="region" name="region">
                         <optgroup label="Regions of the UK">
-                            <option>England</option>
-                            <option>Scotland</option>
-                            <option>Northern Ireland</option>
-                            <option>Wales</option>
+                            <option {% if region_choice == "England" %} selected {% endif %}>England</option>
+                            <option {% if region_choice == "Scotland" %} selected {% endif %}>Scotland</option>
+                            <option {% if region_choice == "Northern Ireland" %} selected {% endif %}>Northern Ireland</option>
+                            <option {% if region_choice == "Wales" %} selected {% endif %}>Wales</option>
                         </optgroup>
                         <optgroup label="Regions of England">
-                            <option>North East</option>
-                            <option>North West</option>
-                            <option>Yorkshire and The Humber</option>
-                            <option>East Midlands</option>
-                            <option>West Midlands</option>
-                            <option>East of England</option>
-                            <option>London</option>
-                            <option>South East</option>
-                            <option>South West</option>
+                            <option {% if region_choice == "North East" %} selected {% endif %}>North East</option>
+                            <option {% if region_choice == "North West" %} selected {% endif %}>North West</option>
+                            <option {% if region_choice == "Yorkshire and The Humber" %} selected {% endif %}>Yorkshire and The Humber</option>
+                            <option {% if region_choice == "East Midlands" %} selected {% endif %}>East Midlands</option>
+                            <option {% if region_choice == "West Midlands" %} selected {% endif %}>West Midlands</option>
+                            <option {% if region_choice == "East of England" %} selected {% endif %}>East of England</option>
+                            <option {% if region_choice == "London" %} selected {% endif %}>London</option>
+                            <option {% if region_choice == "South East" %} selected {% endif %}>South East</option>
+                            <option {% if region_choice == "South West" %} selected {% endif %}>South West</option>
                         </optgroup>
                     </select>
                 </div>

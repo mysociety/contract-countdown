@@ -124,6 +124,9 @@ class EmailAlertView(FilterView):
                 context["filter"].form["classification"].value()
             )
 
+        if self.request.GET.get("region"):
+            context["region_choice"] = self.request.GET.get("region")
+
         return context
 
     def get_queryset(self):
