@@ -179,3 +179,26 @@ class Award(models.Model):
             return "{} months left".format(int(timedelta.days / 30))
         else:
             return "{} days left".format(timedelta.days)
+
+
+class ClimateRepresentative(models.Model):
+    REPRESENTATIVE_CHOICES = [
+        ("Councillor", "councillor"),
+        ("Officer", "officer"),
+    ]
+    title = models.CharField(max_length=10)
+    first_name = models.CharField(max_length=35)
+    surname = models.CharField(max_length=35)
+    council = models.ForeignKey(Council, on_delete=models.CASCADE)
+    email = models.EmailField()
+    job_title = models.CharField(max_length=150)
+    slug = models.SlugField(max_length=70)
+    phone_number = models.CharField(max_length=20, blank=True)
+    address = models.CharField(max_length=165, blank=True)
+    party_affiliation = models.CharField(max_length=50, blank=True)
+    representative_type = models.CharField(max_length=10, choices=REPRESENTATIVE_CHOICES)
+
+
+    @classmethod
+    def slugify_name(cls, name):
+        return slugify(name, allow_unicode=True)
