@@ -1,77 +1,132 @@
 {% extends "procurement/base.html" %}
 
 {% load humanize %}
+{% load static %}
 
 {% block content %}
 
 <div class="bg-gray-100 border-top py-4 py-md-5">
     <div class="container" style="max-width: 44em">
-        <div class="mt-4 mt-md-5 p-3 p-md-4 bg-body border rounded position-relative">
-            <small class="d-block text-muted fw-bold">{{ tender.council.name }}</small>
-            <h2>{{ tender.title }}</h2>
+        <small class="d-block text-muted fw-bold">{{ tender.council.name }}</small>
+        <h1 class="h2">{{ tender.title }}</h1>
 
-            <div class="row gx-md-5 mt-3 mt-md-4">
-                {{ tender.description|linebreaks }}
-            </div>
+        {{ tender.description|linebreaks }}
 
-            <div class="row gx-md-5 mt-3 mt-md-4">
-                <p>
-                Published: {{ tender.published }}
-                </p>
-            </div>
+      {% if tender.published %}
+        <p>Published: {{ tender.published }}</p>
+      {% endif %}
 
-            <h5>Classifications</h5>
-            <p>
-            {% for classification in tender.tenderclassification.all %}
-                {{ classification.classification.description }}{% if not forloop.last %} &middot; {% endif %}
-            {% endfor %}
-            </p>
+        <h2 class="h5 mt-4 mt-md-5 mb-3">Time until this contract ends</h2>
 
-            <div class="row gx-md-5 mt-3 mt-md-4">
-                <div class="col-sm-auto">
-                    <small class="d-block text-muted fw-bold">Total cost</small>
-                    <span class="h4">£{{ tender.value|floatformat:"0"|intcomma }}</span>
-                </div>
-                <div class="col-sm-auto">
-                    <small class="d-block text-muted fw-bold">Estimated emissions</small>
-                    <span class="h4">??</span>
-                </div>
-                <div class="col-sm-auto">
-                    <small class="d-block text-muted fw-bold">Social value</small>
-                    <span class="h4">??</span>
-                </div>
-            </div>
-
-            {% for award in tender.awards.all %}
-            <div class="progress mt-3 mt-md-4">
-                <div class="progress-bar bg-danger" style="width: {{ award.contract_percent_complete }}%"></div>
-            </div>
-            <div class="d-flex flex-wrap">
-                {% if award.contract_ended %}
-                    <strong class="mt-2 me-auto">Ended on {{ award.end_date }}</strong>
-                {% elif not award.contract_started %}
-                <strong class="mt-2 me-auto">Starts on {{ award.start_date }}</strong>
-                {% else %}
-                    <strong class="mt-2 me-auto">{{ award.contract_time_remaining_desc }}</strong>
-                {% endif %}
-
-                <span class="mt-2">{{ award.contract_length_desc }}</span>
-            </div>
-            {% empty %}
-            <div class="d-flex flex-wrap">
-                state: {{ tender.state }}
-                <p>
-                {% if tender.state == 'active' %}
-                    This contract has yet to be awarded. The tender process ends on {{ tender.end_date }}.
-                {% elif tender.state == 'cancelled' %}
-                    This contract was cancelled.
-                {% elif tender.state == 'unsuccesful' %}
-                    The contracting process for this tender was unsuccesful.
-                {% endif %}
-                </p>
-            </div>
-            {% endfor %}
+      {% for award in tender.awards.all %}
+        <div class="progress mt-3 mt-md-4">
+            <div class="progress-bar bg-danger" style="width: {{ award.contract_percent_complete }}%"></div>
         </div>
+        <div class="d-flex flex-wrap">
+          {% if award.contract_ended %}
+            <strong class="mt-2 me-auto">Ended on {{ award.end_date }}</strong>
+          {% elif not award.contract_started %}
+            <strong class="mt-2 me-auto">Starts on {{ award.start_date }}</strong>
+          {% else %}
+            <strong class="mt-2 me-auto">{{ award.contract_time_remaining_desc }}</strong>
+          {% endif %}
+            <span class="mt-2">{{ award.contract_length_desc }}</span>
+        </div>
+      {% empty %}
+        <div class="d-flex flex-wrap">
+          state: {{ tender.state }}
+          <p>
+          {% if tender.state == 'active' %}
+              This contract has yet to be awarded. The tender process ends on {{ tender.end_date }}.
+          {% elif tender.state == 'cancelled' %}
+              This contract was cancelled.
+          {% elif tender.state == 'unsuccesful' %}
+              The contracting process for this tender was unsuccesful.
+          {% endif %}
+          </p>
+        </div>
+      {% endfor %}
+
+        <h2 class="h5 mt-4 mt-md-5 mb-3">Total cost</h2>
+
+        <p>£{{ tender.value|floatformat:"0"|intcomma }}</p>
+
+        <!-- <h2 class="h5 mt-4 mt-md-5 mb-3">Estimated emissions</h2> -->
+        <!-- <h2 class="h5 mt-4 mt-md-5 mb-3">Social value</h2> -->
+
+        <h2 class="h5 mt-4 mt-md-5 mb-3">More like this</h2>
+        <ul class="list-inline">
+          {% for classification in tender.tenderclassification.all %}
+            <li class="list-inline-item">
+                <!-- TODO: How to link to pre-filtered home page? -->
+                <a href="{% url 'home' %}">
+                    {{ classification.classification.description }} contracts
+                </a>
+            </li>
+          {% endfor %}
+            <li class="list-inline-item">
+                <a href="{% url 'council' tender.council.slug %}">
+                    {{ tender.council.name }} contracts
+                </a>
+            </li>
+        </ul>
+
+        <h2 class="h3 mt-4 mt-md-5 mb-0">Take action</h2>
+
+        <div class="row">
+            <div class="col-sm-6 mt-3">
+                <div class="card h-100">
+                    <div class="card-body p-md-4 d-flex flex-column align-items-start">
+                        <h3 class="h4 mb-3"><a href="https://www.whatdotheyknow.com">Request information about this contract</a></h3>
+                        <p>Ask {{ tender.council.name }} whether this contract included any monitoring of emissions or social value. It’s your right to know!</p>
+                        <a href="https://www.whatdotheyknow.com" class="btn btn-primary mt-auto">Visit WhatDoTheyKnow</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 mt-3">
+                <div class="card h-100">
+                    <div class="card-body p-md-4 d-flex flex-column align-items-start">
+                        <h3 class="h4 mb-3"><a href="#">Find out what comes next</a></h3>
+                        <p>Does the council have any plans to replace this contract once it ends? Do those plans take into account the potential emissions impact of the service provision? Ask your local climate councillor to find out.</p>
+                        <a href="#" class="btn btn-primary mt-auto">Send a message</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="h3 mt-4 mt-md-5 mb-0">What does good procurement look like?</h2>
+
+        <div class="row">
+            <div class="col-sm-6 mt-3">
+                <div class="card h-100">
+                    <img src="{% static 'img/ashden-durham-plastics.jpg' %}" class="card-img-top" alt="">
+                    <div class="card-body p-md-4 d-flex flex-column align-items-start">
+                        <small class="d-block text-muted fw-bold">Ashden</small>
+                        <h3 class="h4 mb-3">
+                            <a href="https://ashden.org/news/durhams-plastics-pledge-helps-council-partners-and-suppliers-cut-waste/" class="stretched-link">
+                                Durham’s plastics pledge helps council, partners and suppliers cut waste
+                            </a>
+                        </h3>
+                        <p class="mb-0">Find out how Durham County Council engaged with suppliers, and raised awareness of circular economy with school children and residents.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 mt-3">
+                <div class="card h-100">
+                    <img src="{% static 'img/ashden-northumberland-lights.jpg' %}" class="card-img-top" alt="">
+                    <div class="card-body p-md-4 d-flex flex-column align-items-start">
+                        <small class="d-block text-muted fw-bold">Ashden</small>
+                        <h3 class="h4 mb-3">
+                            <a href="https://ashden.org/news/northumberland-council-cuts-carbon-with-led-street-lights/" class="stretched-link">
+                                Northumberland Council cuts carbon with LED street lights
+                            </a>
+                        </h3>
+                        <p class="mb-0">Find out how Northumberland County Council invested £25 million to half its street lighting energy bill each year, as well as cutting the council’s carbon emissions and light pollution on local streets.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
