@@ -9,17 +9,7 @@ from procurement.mapit import (
     ForbiddenException,
 )
 
-
-class CouncilChoiceAlertForm(forms.Form):
-    CHOICES = [
-        ("All UK councils", "All UK councils"),
-        ("Councils in a region...", "Councils in a region..."),
-        ("My council...", "My council..."),
-    ]
-    council_choice = forms.CharField(widget=forms.RadioSelect(choices=CHOICES))
-
-
-class HomePageTenderForm(forms.Form):
+class PostcodeForm(forms.Form):
     def clean_pc(self):
         pc = self.cleaned_data["pc"]
         if pc != '':
@@ -45,3 +35,8 @@ class HomePageTenderForm(forms.Form):
                 if gss_codes is not None:
                     return gss_codes
         return pc
+
+class ContactPostcodeForm(PostcodeForm):
+    pc = forms.CharField(widget=forms.TextInput(attrs={
+        "class": "form-control"
+    }))

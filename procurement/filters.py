@@ -4,7 +4,7 @@ import django_filters as filters
 import django.forms as forms
 
 from procurement.models import Classification, Council, Tender
-from procurement.forms import HomePageTenderForm
+from procurement.forms import PostcodeForm
 
 NOTIFICATION_MONTHS = [datetime.timedelta(days=x * 30) for x in [3, 6, 12, 18]]
 
@@ -53,7 +53,7 @@ class HomePageTenderFilter(BaseTenderFilter):
         ),
     )
     class Meta:
-        form = HomePageTenderForm
+        form = PostcodeForm
 
 
 class EmailAlertPageTenderFilter(BaseTenderFilter):
