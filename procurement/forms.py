@@ -24,7 +24,9 @@ class HomePageTenderForm(forms.Form):
         pc = self.cleaned_data["pc"]
         if pc != '':
             if not is_valid_postcode(pc):
-                self._errors["pc"] = "Invalid postcode or council name"
+                self._errors["pc"] = [
+                    "Invalid postcode or council name"
+                ]
             else:
                 mapit = MapIt()
 
@@ -37,7 +39,9 @@ class HomePageTenderForm(forms.Form):
                     InternalServerErrorException,
                     ForbiddenException,
                 ) as error:
-                    self._errors["pc"] = "Invalid postcode or council name"
+                    self._errors["pc"] = [
+                        "Invalid postcode or council name"
+                    ]
                 if gss_codes is not None:
                     return gss_codes
         return pc

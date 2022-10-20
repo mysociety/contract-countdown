@@ -1,21 +1,28 @@
 {% load django_bootstrap5 %}
 <form method="get">
 <div class="row">
-    <div class="col-sm-auto me-auto">
-        <label for="council-search" class="form-label">Search by postcode or council name</label>
-        <div class="error" >{{ filter.form.pc.errors }}</div>
-        <div class="search-input">
-            {% include 'procurement/icons/search.html' with classes='mr-2 flex-grow-0 flex-shrink-0' width='1.25em' height='1.25em' role='presentation' %}
-            {{ filter.form.pc }}
+    <div class="col-sm-6">
+        <div class="mb-3">
+            <label for="council-search" class="form-label">Search by postcode or council name</label>
+            <div class="search-input">
+                {% include 'procurement/icons/search.html' with classes='mr-2 flex-grow-0 flex-shrink-0' width='1.25em' height='1.25em' role='presentation' %}
+                {% bootstrap_field filter.form.pc show_label="skip" wrapper_class="" %}
+            </div>
+          {% for error in filter.form.pc.errors %}
+            <div class="invalid-feedback d-block" >{{ error }}</div>
+          {% endfor %}
         </div>
     </div>
 
-    <div class="col-sm-auto form-sort-by">
-        {% bootstrap_field filter.form.sort %}
-    </div>
-
-    <div class="col-sm-auto d-flex align-items-end">
-        <input class="btn btn-primary mb-3" type="submit" value="Filter">
+    <div class="col-sm-6 form-sort-by">
+        <div class="row align-items-end">
+            <div class="col-auto">
+                {% bootstrap_field filter.form.sort %}
+            </div>
+            <div class="col-auto">
+                <input class="btn btn-primary mb-3" type="submit" value="Filter">
+            </div>
+        </div>
     </div>
 </div>
 
