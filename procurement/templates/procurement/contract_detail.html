@@ -61,7 +61,7 @@
           {% if classification.classification.group  %}
                 <li class="list-inline-item">
                     <a href="{% url 'home' %}{% urlparams classification=classification.classification.group  %}">
-                        {{ classification.classification.description }} contracts
+                        {{ classification.classification.group }} contracts
                     </a>
                 </li>
             {% endif %}
