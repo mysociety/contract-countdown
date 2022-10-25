@@ -22,21 +22,22 @@ class CouncilChoiceAlertForm(forms.Form):
 class HomePageTenderForm(forms.Form):
     def clean_pc(self):
         pc = self.cleaned_data["pc"]
-        if not is_valid_postcode(pc):
-            self._errors["pc"] = "Invalid postcode or council name"
-        else:
-            mapit = MapIt()
-
-            gss_codes = None
-            try:
-                gss_codes = mapit.postcode_point_to_gss_codes(pc)
-            except (
-                NotFoundException,
-                BadRequestException,
-                InternalServerErrorException,
-                ForbiddenException,
-            ) as error:
+        if pc != '':
+            if not is_valid_postcode(pc):
                 self._errors["pc"] = "Invalid postcode or council name"
-            if gss_codes is not None:
-                return gss_codes
+            else:
+                mapit = MapIt()
+
+                gss_codes = None
+                try:
+                    gss_codes = mapit.postcode_point_to_gss_codes(pc)
+                except (
+                    NotFoundException,
+                    BadRequestException,
+                    InternalServerErrorException,
+                    ForbiddenException,
+                ) as error:
+                    self._errors["pc"] = "Invalid postcode or council name"
+                if gss_codes is not None:
+                    return gss_codes
         return pc
