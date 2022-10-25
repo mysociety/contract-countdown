@@ -2,6 +2,7 @@
 
 {% load humanize %}
 {% load static %}
+{% load urlparams %}
 
 {% block content %}
 
@@ -57,12 +58,13 @@
         <h2 class="h5 mt-4 mt-md-5 mb-3">More like this</h2>
         <ul class="list-inline">
           {% for classification in tender.tenderclassification.all %}
-            <li class="list-inline-item">
-                <!-- TODO: How to link to pre-filtered home page? -->
-                <a href="{% url 'home' %}">
-                    {{ classification.classification.description }} contracts
-                </a>
-            </li>
+          {% if classification.classification.group  %}
+                <li class="list-inline-item">
+                    <a href="{% url 'home' %}{% urlparams classification=classification.classification.group  %}">
+                        {{ classification.classification.description }} contracts
+                    </a>
+                </li>
+            {% endif %}
           {% endfor %}
             <li class="list-inline-item">
                 <a href="{% url 'council' tender.council.slug %}">
