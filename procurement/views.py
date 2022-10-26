@@ -2,17 +2,18 @@ from urllib.parse import unquote
 from datetime import date, timedelta
 
 from django.db.models import F
+from django.http import Http404
 from django.shortcuts import redirect, get_object_or_404
-from django.views.generic import ListView, TemplateView, DetailView
+from django.views.generic import ListView, TemplateView, DetailView, FormView
 
 from django_filters.views import FilterView
 
-from procurement.models import Council, Tender
+from procurement.models import ClimateRepresentative, Council, Tender
 from procurement.filters import (
     EmailAlertPageTenderFilter,
     HomePageTenderFilter,
 )
-from procurement.forms import CouncilChoiceAlertForm
+from procurement.forms import ContactPostcodeForm, ContactRepresentativeForm
 from procurement.mapit import (
     MapIt,
     NotFoundException,
@@ -144,3 +145,45 @@ class EmailAlertView(FilterView):
         )
 
         return qs
+
+class ContactView(FormView):
+    template_name ="procurement/contact.html"
+    form_class = ContactPostcodeForm
+
+    def form_valid(self, form):
+        council = Council.objects.filter(gss_code__in=form.cleaned_data['pc'])[0]
+        return redirect('/contact/' + council.slug + '/')
+
+class ContactCouncilView(TemplateView):
+    template_name ="procurement/contact_council.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        council = get_object_or_404(Council, slug=self.kwargs["council"])
+        context["council"] = council
+        context["officers"] = ClimateRepresentative.objects.filter(council=council).filter(representative_type="officer")
+        context["councillors"] = ClimateRepresentative.objects.filter(council=council).filter(representative_type="councillor")
+        return context
+
+
+class ContactRepresentativeView(FormView): 
+    template_name ="procurement/contact_representative.html"
+    form_class = ContactRepresentativeForm
+    success_url = "/contact_success/"
+
+    def form_valid(self, form):
+        # Send the email
+        return super(ContactRepresentativeView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        council = get_object_or_404(Council, slug=self.kwargs["council"])
+        representative = get_object_or_404(ClimateRepresentative, slug=self.kwargs["representative"])
+        if representative.council == council:
+            context["representative"] = representative
+        else:
+            raise Http404()
+        return context
+
+class ContactSuccessView(TemplateView):
+    template_name = "procurement/contact_success.html"

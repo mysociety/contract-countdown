@@ -9,6 +9,10 @@ urlpatterns = [
     path("council/<slug:slug>/", views.CouncilContractsView.as_view(), name="council"),
     path("contract/<slug>/", views.ContractDetailView.as_view(), name="contract"),
     path("emails/", views.EmailAlertView.as_view(), name="emails"),
+    path("contact/", views.ContactView.as_view(), name="contact"),
+    path("contact/<slug:council>/", views.ContactCouncilView.as_view(), name="contact_council"),
+    path("contact/<slug:council>/<slug:representative>/", views.ContactRepresentativeView.as_view(), name="contact_representative"),
+    path("contact_success/", views.ContactSuccessView.as_view(), name="contact_success"),
     path("admin/", admin.site.urls),
 ]
 

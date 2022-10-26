@@ -1,0 +1,41 @@
+{% extends "procurement/base.html" %}
+
+{% load humanize %}
+{% load django_bootstrap5 %}
+{% load page_filter %}
+
+{% block content %}
+
+<div class="bg-gray-100 border-top py-4 py-md-5">
+    <div class="container" style="max-width: 44em">
+
+        <div class="mx-auto" style="max-width: 36em">
+            <h1 class="h2 text-center">Choose a representative</h1>
+            <p class="text-center">These are the climate representatives in {{ council.name }}.</p>
+        </div>
+
+        <div>
+            {% for officer in officers %}
+            <div class="tender-card mt-4 mt-md-5 p-3 p-md-4 bg-body border rounded position-relative">
+                <small class="d-block text-muted fw-bold">Climate Officer</small>
+                <h2><a class="stretched-link" href="{% url 'contact_representative' council=council.slug representative=officer.slug %}">{{ officer.title }} {{ officer.first_name }} {{ officer.surname }}</a></h2>
+                <i>{{ officer.job_title }}</i>
+            </div>
+            {% endfor %}
+        </div>
+        <div>
+            {% for councillor in councillors %}
+            <div class="tender-card mt-4 mt-md-5 p-3 p-md-4 bg-body border rounded position-relative">
+                <small class="d-block text-muted fw-bold">Climate Councillor</small>
+                <h2><a class="stretched-link" href="{% url 'contact_representative' council=council.slug representative=councillor.slug %}">{{ councillor.title }} {{ councillor.first_name }} {{ councillor.surname }}</a></h2>
+                <i>{{ councillor.job_title }}</i>
+            </div>
+            {% endfor %}
+            
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "procurement/base.html" %}
+
+{% load humanize %}
+{% load django_bootstrap5 %}
+{% load page_filter %}
+
+{% block content %}
+
+<div class="bg-gray-100 border-top py-4 py-md-5">
+    <div class="container" style="max-width: 44em">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="h2 text-center">Write your message</h1>
+                <p class="text-center">Writing to {{ representative.title }} {{ representative.first_name }} {{ representative.surname }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="card card-body col-md-3">
+                <h5>Instructions</h4>
+                <p style="font-size:0.9em;">Please be polite, concise and to the point; if you abuse your councillor you devalue the service for all users.</p>
+                <hr>
+                <p style="font-size:0.9em;">Use your own words; we block copied-and-pasted identical messages.</p>
+                <hr>
+                <p style="font-size:0.9em;">Something contract-specific here, probably.</p>
+            </div>
+            <div class="col-md-9">
+                <form method="post">
+                    {{ form.non_field_errors }}
+
+                    {% csrf_token %}
+                    <div class="row">
+                        <fieldset class="col-md-12">
+                            {% bootstrap_field form.message show_label="skip" %}
+                        </fieldset>
+                    </div>
+                    <div class="row mt-3">
+                        <fieldset class="col-md-6">
+                            <legend class="form-label" style="font-size: 1em; float: none;">About You</legend>
+                            <label class="form-label" style="font-weight: normal;" for="name">Your name</label>
+                            {% bootstrap_field form.name show_label="skip" %}
+                            <label class="form-label" style="font-weight: normal;" for="email">Your email</label>
+                            {% bootstrap_field form.email show_label="skip" %}
+                            <label class="form-label" style="font-weight: normal;" for="email_check">Confirm email</label>
+                            {% bootstrap_field form.email_check show_label="skip" %}
+                            <label class="form-label" style="font-weight: normal;" for="phone">Phone</label>
+                            {% bootstrap_field form.phone show_label="skip" %}
+                        </fieldset>
+                        <fieldset class="col-sm-6">
+                            <div class="row">
+                                <div class="col-12">
+                                    <legend class="form-label" style="font-size: 1em; float: none;">Your Address</legend>
+                                    <label class="form-label" style="font-weight: normal;" for="address_1">Address Line 1</label>
+                                    {% bootstrap_field form.address_1 show_label="skip" %}
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label" style="font-weight: normal;" for="address_2">Address Line 2</label>
+                                    {% bootstrap_field form.address_2 show_label="skip" %}
+                                </div>
+                                <div class="col-12">  
+                                    <label class="form-label" style="font-weight: normal;" for="town_city">Town/City</label>
+                                    {% bootstrap_field form.town_city show_label="skip" %}
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label class="form-label" style="font-weight: normal;" for="county">County</label>
+                                        {% bootstrap_field form.county show_label="skip" %}
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="form-label" style="font-weight: normal;" for="pc">Postcode</label>
+                                        {% bootstrap_field form.pc show_label="skip" %}
+                                    </div>
+                                </div>
+                        </div>
+                        </fieldset>
+                    </div>
+                        <input type="submit" class="btn btn-primary ml-auto mt-3" value="Preview and Send">
+                    </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
