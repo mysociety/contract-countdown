@@ -42,3 +42,9 @@ Then, still inside the shell, run:
     ./manage.py import_tenders
 
 The import will take a while!
+
+Finally, to import the climate councillors and officers, run:
+
+    ./manage.py import_climate_representatives
+
+For this to work, ensure you have `comeval_councillors.csv` **and** `comeval_officers.csv` in `data/procurement_data`. These can be downloaded from [here](https://github.com/mysociety/comeval-climate-data).
