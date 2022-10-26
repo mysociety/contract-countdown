@@ -126,6 +126,11 @@ class EmailAlertView(FilterView):
 
         if self.request.GET.get("region"):
             context["region_choice"] = self.request.GET.get("region")
+        
+        if self.request.GET.get("council_exact"):
+            council = self.request.GET.get("council_exact")
+            if not Council.objects.filter(name__iexact=council.lower()).exists():
+                context["council_exact_error"] = "Invalid postcode or council"
 
         return context
 
