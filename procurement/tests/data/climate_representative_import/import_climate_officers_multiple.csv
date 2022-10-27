@@ -1,0 +1,23 @@
+title,firstName,surname,type,represents,council,councilInternalName,region,county,gssNumber,email,code,jobTitle,phone,address,address1,address2,address3,address4,address6,genericPositionList,countyGssNumber,address5,fax,secondEmail,local-authority-code,official-name,local-authority-type-name
+Mr,Patrick,Weber,Officer,Kingshol,Kingshol,"Kingshol Borough Council",Northern Ireland,Northern Ireland,N01232343,patrick.weber@kingsholboroughcouncil.gov.uk,84573624,Climate Environment,1234 1234 123,"Kingshol City, Kingshol Borough Council
+Building name
+New Road
+Kingshol
+Kingshol City
+ABCD EFG","Kingshol Borough Council",Building name,New Road,Kingshol,ABCD EFG,Climate Change Officer,N120001231,Kingshol City,,,KBC,"Kingshol Borough Council",NI district
+Ms,Cassandra,Almond,Officer,Didun,Didun,Didun Council,Scotland,Scotland,S45111143,cassandra.almond@diduncouncil.gov.uk,85739957,Job Title,8576 57475748,"Didun Council
+Building
+Ocean Road
+Didun
+KD3 4DJ",Didun Council,Building,Ocean Road,Didun,KD3 4DJ,Climate Change Officer,S78444445,,,,DDN,Didun Council,Scottish unitary authority
+Ms,Nola,Silva,Officer,Clunnkridge,Clunnkridge,Clunnkridge Council,Scotland,Scotland,S09432369,nola.silva@clunnkridge.gov.uk,10072262,Climate Change Officer,85748574968,"Clunnkridge Council
+New Building
+High Street
+Didun
+OO2 2OO",Clunnkridge Council,New Building,High Street,Didun,OO2 2OO,Climate Change Officer,S78444445,,,,CLN,Clunnkridge Council,Scottish unitary authority
+Ms,Kelsea,Dawson,Officer,Sheadsophi,Sheadsophi,Sheadsophi District Council,South East,West Sussex,E45321567,kelsea.dawson@sheadsophi.gov.uk,10079659,Strategic Sustainability Manager,84857 579757,"Sheadsophi Council
+Large Building
+Old Road
+Sheadsophi
+West Sussex
+JR4 7YL",Sheadsophi Council,Large Building,Old Road,Sheadsophi,JR4 7YL,Climate Change Officer,E43234324,West Sussex,,,SHS,Sheadsophi District Council,Non-metropolitan district

@@ -1,0 +1,18 @@
+title,firstName,surname,type,represents,council,councilInternalName,region,county,gssNumber,email,code,jobTitle,phone,address,address1,address2,address3,address4,address6,genericPositionList,countyGssNumber,address5,fax,secondEmail,local-authority-code,official-name,local-authority-type-name
+Mr,Patrick,Weber,Officer,Kingshol,Kingshol,Kingshol Borough Council,Northern Ireland,Northern Ireland,N01232343,patrick.weber@kingsholboroughcouncil.gov.uk,84573624,Climate Environment,1234 1234 123,"Kingshol City, Kingshol Borough Council
+Building name
+New Road
+Kingshol
+Kingshol City
+ABCD EFG",Kingshol Borough Council,Building name,New Road,Kingshol,ABCD EFG,Climate Change Officer,N120001231,Kingshol City,,,KBC,Kingshol Borough Council,NI district
+Mr,Darien,Ayers,Officer,Dobugrave,Dobugrave,Dobugrave City Council,West Midlands,West Midlands,E23434215,,67963424,Climate Job Title,67567 7567467,"Dobugrave City Council
+House
+Dobugrave
+AB1 2CD",Dobugrave City Council,House,Dobugrave,,AB1 2CD,Climate Change Officer,E472948275,,,,DOU,Dobugrave City Council,Metropolitan district
+,,,,,,,,,,,,,,,,,,,,,,,,,CPCA,Cambridgeshire and Peterborough Combined Authority,Combined authority
+Mr,,Davis,Officer,Crahor,Crahor,Crahor City Council,East Midlands,Crahorshire,E94938403,niamh.davis@crahorshire.gov.uk,83749289,Climate Officer,8374 234 2948,"Crahor City Council
+Hall
+Street
+Crahor
+KS3 LS4",Crahor City Council,Hall,Street,Crahor,KS3 LS4,Climate Change Officer,E20394838,,,,CRA,Crahor City Council,Unitary authority
+,,,,,,,,,,,,,,,,,,,,,,,,,EAE,Earleye City Council,Combined authority
