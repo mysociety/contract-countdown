@@ -16,15 +16,37 @@ from procurement.models import Council, ClimateRepresentative
 class Command(BaseCommand):
     help = "import climate councillors and officers"
 
+    officers_file = "data/procurement_data/comeval_officers.csv"
+    councillors_file = "data/procurement_data/comeval_councillors.csv"
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--officers_file",
+            action="store_true",
+            help="provide alternative officers data file",
+        )
+
+        parser.add_argument(
+            "--councillors_file",
+            action="store_true",
+            help="provide alternative councillors data file",
+        )
+
     def handle(self, *args, **options):
+        self.options = options
+
+        if options["officers_file"]:
+            self.officers_file = options["officers_file"]
+
+        if options["councillors_file"]:
+            self.councillors_file = options["councillors_file"]
         self.get_df()
         self.import_councilors_officers()
 
     def get_df(self):
-        officers_file = "data/procurement_data/comeval_officers.csv"
-        councillors_file = "data/procurement_data/comeval_councillors.csv"
+
         officers_df = pd.read_csv(
-            officers_file,
+            self.officers_file,
             usecols=[
                 "title",
                 "firstName",
@@ -38,7 +60,7 @@ class Command(BaseCommand):
             ],
         )
         councillors_df = pd.read_csv(
-            councillors_file,
+            self.councillors_file,
             usecols=[
                 "title",
                 "firstName",
@@ -85,4 +107,3 @@ class Command(BaseCommand):
             except Council.DoesNotExist:
                 fail_count += 1
         print("Fail count: " + str(fail_count))
-
