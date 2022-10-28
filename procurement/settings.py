@@ -159,6 +159,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 BOOTSTRAP5 = {
     "set_placeholder": False,
     "server_side_validation": True,
+    "field_renderers": {
+        "default": "procurement.renderers.CustomFieldRenderer",
+    },
 }
 
 # data locations
