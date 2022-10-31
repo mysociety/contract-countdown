@@ -7,65 +7,50 @@
 {% block content %}
 
 <div class="bg-gray-100 border-top py-4 py-md-5">
-    <div class="container" style="max-width: 44em">
+    <div class="container" style="max-width: 60em">
+        <h1 class="h2 text-center">Write your message</h1>
+        <p class="text-center">Writing to {{ representative.title }} {{ representative.first_name }} {{ representative.surname }}</p>
         <div class="row">
-            <div class="col-md-12">
-                <h1 class="h2 text-center">Write your message</h1>
-                <p class="text-center">Writing to {{ representative.title }} {{ representative.first_name }} {{ representative.surname }}</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="card card-body col-md-3">
-                <h5>Instructions</h4>
-                <p style="font-size:0.9em;">Please be polite, concise and to the point; if you abuse your councillor you devalue the service for all users.</p>
-                <hr>
-                <p style="font-size:0.9em;">Use your own words; we block copied-and-pasted identical messages.</p>
-                <hr>
-                <p style="font-size:0.9em;">Something contract-specific here, probably.</p>
+            <div class="col-md-3">
+                <div class="card card-body">
+                    <h5>Instructions</h4>
+                    <p class="mb-0" style="font-size:0.9em;">Please be polite, concise and to the point; if you abuse your councillor you devalue the service for all users.</p>
+                    <hr>
+                    <p class="mb-0" style="font-size:0.9em;">Use your own words; we block copied-and-pasted identical messages.</p>
+                    <hr>
+                    <p class="mb-0" style="font-size:0.9em;">Something contract-specific here, probably.</p>
+                </div>
             </div>
             <div class="col-md-9">
                 <form method="post">
                     {{ form.non_field_errors }}
-
                     {% csrf_token %}
-                    <div class="row">
-                        <fieldset class="col-md-12">
-                            {% bootstrap_field form.message show_label="skip" %}
-                        </fieldset>
-                    </div>
+                    {% bootstrap_field form.message show_label="skip" %}
                     <div class="row mt-3">
                         <fieldset class="col-md-6">
-                            <legend class="form-label" style="font-size: 1em; float: none;">About You</legend>
+                            <legend class="h6 text-muted mb-3">About You</legend>
                             {% bootstrap_field form.name %}
                             {% bootstrap_field form.email %}
                             {% bootstrap_field form.email_check %}
                             {% bootstrap_field form.phone %}
                         </fieldset>
                         <fieldset class="col-sm-6">
+                            <legend class="h6 text-muted mb-3">Your Address</legend>
+                            {% bootstrap_field form.address_1 %}
+                            {% bootstrap_field form.address_2 %}
+                            {% bootstrap_field form.town_city %}
                             <div class="row">
-                                <div class="col-12">
-                                    <legend class="form-label" style="font-size: 1em; float: none;">Your Address</legend>
-                                    {% bootstrap_field form.address_1 %}
+                                <div class="col-sm-6">
+                                    {% bootstrap_field form.county %}
                                 </div>
-                                <div class="col-12">
-                                    {% bootstrap_field form.address_2 %}
+                                <div class="col-sm-6">
+                                    {% bootstrap_field form.pc %}
                                 </div>
-                                <div class="col-12">
-                                    {% bootstrap_field form.town_city %}
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        {% bootstrap_field form.county %}
-                                    </div>
-                                    <div class="col-sm-6">
-                                        {% bootstrap_field form.pc %}
-                                    </div>
-                                </div>
-                        </div>
+                            </div>
                         </fieldset>
                     </div>
-                        <input type="submit" class="btn btn-primary ml-auto mt-3" value="Preview and Send">
-                    </form>
+                    <input type="submit" class="btn btn-primary ml-auto mt-3" value="Preview and Send">
+                </form>
 
             </div>
         </div>
