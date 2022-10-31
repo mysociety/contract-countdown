@@ -42,12 +42,11 @@ class ContactPostcodeForm(PostcodeForm):
 class ContactRepresentativeForm(PostcodeForm):
     message = forms.CharField(widget=forms.Textarea())
     name = forms.CharField(widget=forms.TextInput())
-    # Use CharField + TextInput for the email boxes so that the
-    # validator raises errors rather than using the browser validation,
-    # for consistency.
-    email = forms.CharField(widget=forms.TextInput(), validators=[EmailValidator()])
-    email_check = forms.CharField(
-        widget=forms.TextInput(), validators=[EmailValidator()], label="Confirm Email"
+    email = forms.CharField(widget=forms.EmailInput()
+    )
+    email_check = forms.EmailField(
+        widget=forms.TextInput(),
+        label="Confirm Email"
     )
     # EXTREMELY permissive regex validation for UK phone numbers.
     phone = forms.CharField(
