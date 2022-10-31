@@ -47,7 +47,7 @@ class ContactRepresentativeForm(PostcodeForm):
     # for consistency.
     email = forms.CharField(widget=forms.TextInput(), validators=[EmailValidator()])
     email_check = forms.CharField(
-        widget=forms.TextInput(), validators=[EmailValidator()]
+        widget=forms.TextInput(), validators=[EmailValidator()], label="Confirm Email"
     )
     # EXTREMELY permissive regex validation for UK phone numbers.
     phone = forms.CharField(
@@ -61,11 +61,13 @@ class ContactRepresentativeForm(PostcodeForm):
         widget=forms.TextInput(),
         required=False,
     )
-    address_1 = forms.CharField(widget=forms.TextInput())
-    address_2 = forms.CharField(widget=forms.TextInput(), required=False)
-    town_city = forms.CharField(widget=forms.TextInput())
+    address_1 = forms.CharField(widget=forms.TextInput(), label="Address Line 1")
+    address_2 = forms.CharField(
+        widget=forms.TextInput(), required=False, label="Address Line 2"
+    )
+    town_city = forms.CharField(widget=forms.TextInput(), label="Town/City")
     county = forms.CharField(widget=forms.TextInput(), required=False)
-    pc = forms.CharField(widget=forms.TextInput())
+    pc = forms.CharField(widget=forms.TextInput(), label="Postcode")
 
     def __init__(self, *args, **kwargs):
         super(ContactRepresentativeForm, self).__init__(*args, **kwargs)
