@@ -60,7 +60,7 @@
           {% for classification in tender.tenderclassification.all %}
           {% if classification.classification.group  %}
                 <li class="list-inline-item">
-                    <a href="{% url 'home' %}{% urlparams classification=classification.classification.group  %}">
+                    <a href="{% url 'home' %}{% urlparams classification=classification.classification.group %}">
                         {{ classification.classification.group }} contracts
                     </a>
                 </li>
@@ -88,9 +88,9 @@
             <div class="col-sm-6 mt-3">
                 <div class="card h-100">
                     <div class="card-body p-md-4 d-flex flex-column align-items-start">
-                        <h3 class="h4 mb-3"><a href="{% url 'contact_council' tender.council.slug %}">Find out what comes next</a></h3>
+                        <h3 class="h4 mb-3"><a href="{% url 'contact_council' tender.council.slug %}{% urlparams contract=tender.uuid %}">Find out what comes next</a></h3>
                         <p>Does the council have any plans to replace this contract once it ends? Do those plans take into account the potential emissions impact of the service provision? Ask your local climate councillor to find out.</p>
-                        <a href="{% url 'contact_council' tender.council.slug %}" class="btn btn-primary mt-auto">Send a message</a>
+                        <a href="{% url 'contact_council' tender.council.slug %}{% urlparams contract=tender.uuid %}" class="btn btn-primary mt-auto">Send a message</a>
                     </div>
                 </div>
             </div>

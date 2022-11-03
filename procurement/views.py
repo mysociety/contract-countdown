@@ -160,6 +160,8 @@ class ContactCouncilView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         council = get_object_or_404(Council, slug=self.kwargs["council"])
+        if self.request.GET.get('contract'):
+            context["contract"] = self.request.GET.get('contract')
         context["council"] = council
         context["officers"] = ClimateRepresentative.objects.filter(council=council).filter(representative_type="officer")
         context["councillors"] = ClimateRepresentative.objects.filter(council=council).filter(representative_type="councillor")
@@ -183,6 +185,8 @@ class ContactRepresentativeView(FormView):
             context["representative"] = representative
         else:
             raise Http404()
+        if self.request.GET.get('contract'):
+            context["contract"] = Tender.objects.get(uuid=self.request.GET.get('contract'))
         return context
 
 class ContactSuccessView(TemplateView):

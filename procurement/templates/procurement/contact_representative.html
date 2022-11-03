@@ -10,6 +10,41 @@
     <div class="container" style="max-width: 60em">
         <h1 class="h2 text-center">Write your message</h1>
         <p class="text-center">Writing to {{ representative.title }} {{ representative.first_name }} {{ representative.surname }}</p>
+        {% if contract %}
+        <div class="tender-card mt-4 mt-md-5 p-3 p-md-4 mb-4 bg-body border rounded position-relative">
+            <small class="d-block text-muted fw-bold">{{ contract.council.name }}</small>
+            <h2><a class="stretched-link" href="{% url 'contract' contract.uuid_url_safe %}">{{ contract.title }}</a></h2>
+            <div class="row gx-md-5 mt-3 mt-md-4">
+                <div class="col-sm-auto">
+                    <small class="d-block text-muted fw-bold">Total cost</small>
+                    <span class="h4">£{{ contract.value|floatformat:"0"|intcomma }}</span>
+                </div>
+                <div class="col-sm-auto">
+                    <small class="d-block text-muted fw-bold">Estimated emissions</small>
+                    <span class="h4">??</span>
+                </div>
+                <div class="col-sm-auto">
+                    <small class="d-block text-muted fw-bold">Social value</small>
+                    <span class="h4">??</span>
+                </div>
+            </div>
+            {% for award in contract.awards.all %}
+            <div class="progress mt-3 mt-md-4">
+                <div class="progress-bar bg-danger" style="width: {{ award.contract_percent_complete }}%"></div>
+            </div>
+            <div class="d-flex flex-wrap">
+            {% if award.contract_ended %}
+                <strong class="mt-2 me-auto">Ended on {{ award.end_date }}</strong>
+            {% elif not award.contract_started %}
+                <strong class="mt-2 me-auto">Starts on {{ award.start_date }}</strong>
+            {% else %}
+                <strong class="mt-2 me-auto">{{ award.contract_time_remaining_desc }}</strong>
+            {% endif %}
+                <span class="mt-2">{{ award.contract_length_desc }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
         <div class="row">
             <div class="col-md-3">
                 <div class="card card-body">
