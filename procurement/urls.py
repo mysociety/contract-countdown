@@ -12,7 +12,7 @@ urlpatterns = [
     path("contact/", views.ContactView.as_view(), name="contact"),
     path("contact/<slug:council>/", views.ContactCouncilView.as_view(), name="contact_council"),
     path("contact/<slug:council>/<slug:representative>/", views.ContactRepresentativeView.as_view(), name="contact_representative"),
-    path("contact_success/", views.ContactSuccessView.as_view(), name="contact_success"),
+    path("contact/<slug:council>/<slug:representative>/preview/", views.ContactPreviewView.as_view(), name="preview"),
     path("admin/", admin.site.urls),
 ]
 

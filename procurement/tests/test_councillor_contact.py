@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from datetime import date, timedelta
 
 import unittest
@@ -36,11 +36,15 @@ class TestContactClimateRepresentativeTestCase(TestCase):
         )
 
     def test_representative_models_slugs(self):
-        councillor = ClimateRepresentative.objects.filter(representative_type="councillor").first()
-        officer = ClimateRepresentative.objects.filter(representative_type="officer").first()
+        councillor = ClimateRepresentative.objects.filter(
+            representative_type="councillor"
+        ).first()
+        officer = ClimateRepresentative.objects.filter(
+            representative_type="officer"
+        ).first()
 
-        self.assertEqual(councillor.slug, "40", "correct councillor slug")
-        self.assertEqual(officer.slug, "37", "correct officer slug")
+        self.assertEqual(councillor.slug, "46", "correct councillor slug")
+        self.assertEqual(officer.slug, "43", "correct officer slug")
 
     def test_council_contract_view(self):
         response = self.client.get(
@@ -93,7 +97,7 @@ class TestContactClimateRepresentativeTestCase(TestCase):
                 "contact_representative",
                 kwargs={
                     "council": "made-up-council",
-                    "representative": "40",
+                    "representative": "46",
                 },
             )
         )
@@ -110,10 +114,18 @@ class TestContactClimateRepresentativeTestCase(TestCase):
         response = self.client.get(
             reverse(
                 "contact_representative",
-                kwargs={"council": "bristol-city-council", "representative": "40"}
+                kwargs={"council": "bristol-city-council", "representative": "46"},
             )
         )
+        self.assertEqual(response.status_code, 404)
 
+        response = self.client.get(
+            reverse(
+                "preview",
+                kwargs={"council": "bristol-city-council", "representative": "46"},
+            )
+        )
+        self.assertEqual(response.status_code, 404)
 
     def test_postcode_search_form_valid(self):
         valid_postcodes = ["SW1A 0AA", "cf101ag"]
@@ -202,3 +214,12 @@ class TestContactClimateRepresentativeTestCase(TestCase):
         for data in invalid_data:
             form = ContactRepresentativeForm(data=data)
             self.assertFalse(form.is_valid())
+
+    def test_no_form_data_found_in_session_in_preview(self):
+        response = self.client.get(
+            reverse(
+                "preview",
+                kwargs={"council": "ceredigion-county-council", "representative": "46"},
+            )
+        )
+        self.assertEqual(response.status_code, 404)

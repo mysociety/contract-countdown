@@ -2,6 +2,7 @@ from urllib.parse import unquote
 from datetime import date, timedelta
 
 from django.db.models import F
+from django.utils.http import urlencode
 from django.http import Http404
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import ListView, TemplateView, DetailView, FormView
@@ -21,6 +22,22 @@ from procurement.mapit import (
     InternalServerErrorException,
     ForbiddenException,
 )
+
+
+def check_council_and_representative_match(view_class, context):
+    context["council"] = get_object_or_404(Council, slug=view_class.kwargs["council"])
+    representative = get_object_or_404(
+        ClimateRepresentative, slug=view_class.kwargs["representative"]
+    )
+    if representative.council == context["council"]:
+        context["representative"] = representative
+    else:
+        raise Http404("Representative and council don't match.")
+    if view_class.request.GET.get("contract"):
+        context["contract"] = Tender.objects.get(
+            uuid=view_class.request.GET.get("contract")
+        )
+    return context
 
 
 class HomePageView(FilterView):
@@ -127,7 +144,7 @@ class EmailAlertView(FilterView):
 
         if self.request.GET.get("region"):
             context["region_choice"] = self.request.GET.get("region")
-        
+
         if self.request.GET.get("council_exact"):
             council = self.request.GET.get("council_exact")
             if not Council.objects.filter(name__iexact=council.lower()).exists():
@@ -146,48 +163,85 @@ class EmailAlertView(FilterView):
 
         return qs
 
+
 class ContactView(FormView):
-    template_name ="procurement/contact.html"
+    template_name = "procurement/contact.html"
     form_class = ContactPostcodeForm
 
     def form_valid(self, form):
-        council = Council.objects.filter(gss_code__in=form.cleaned_data['pc'])[0]
-        return redirect('/contact/' + council.slug + '/')
+        council = Council.objects.filter(gss_code__in=form.cleaned_data["pc"])[0]
+        return redirect("/contact/" + council.slug + "/")
+
 
 class ContactCouncilView(TemplateView):
-    template_name ="procurement/contact_council.html"
+    template_name = "procurement/contact_council.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         council = get_object_or_404(Council, slug=self.kwargs["council"])
-        if self.request.GET.get('contract'):
-            context["contract"] = self.request.GET.get('contract')
+        if self.request.GET.get("contract"):
+            context["contract"] = self.request.GET.get("contract")
         context["council"] = council
-        context["officers"] = ClimateRepresentative.objects.filter(council=council).filter(representative_type="officer")
-        context["councillors"] = ClimateRepresentative.objects.filter(council=council).filter(representative_type="councillor")
+        context["officers"] = ClimateRepresentative.objects.filter(
+            council=council
+        ).filter(representative_type="officer")
+        context["councillors"] = ClimateRepresentative.objects.filter(
+            council=council
+        ).filter(representative_type="councillor")
         return context
 
 
-class ContactRepresentativeView(FormView): 
-    template_name ="procurement/contact_representative.html"
+class ContactRepresentativeView(FormView):
+    template_name = "procurement/contact_representative.html"
     form_class = ContactRepresentativeForm
-    success_url = "/contact_success/"
 
     def form_valid(self, form):
-        # Send the email
-        return super(ContactRepresentativeView, self).form_valid(form)
+        self.request.session[
+            "representative_form_" + self.kwargs["representative"]
+        ] = form.data
+        if self.request.GET.get("contract"):
+            return redirect(
+                "preview/?{query}".format(
+                    query=urlencode({"contract": self.request.GET.get("contract")})
+                )
+            )
+        else:
+            return redirect("preview/")
+
+    def get_initial(self):
+        initial = super().get_initial()
+        if (
+            "representative_form_" + self.kwargs["representative"]
+            in self.request.session
+        ):
+            initial.update(
+                self.request.session.pop(
+                    "representative_form_" + self.kwargs["representative"]
+                )
+            )
+        return initial
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        council = get_object_or_404(Council, slug=self.kwargs["council"])
-        representative = get_object_or_404(ClimateRepresentative, slug=self.kwargs["representative"])
-        if representative.council == council:
-            context["representative"] = representative
-        else:
-            raise Http404()
-        if self.request.GET.get('contract'):
-            context["contract"] = Tender.objects.get(uuid=self.request.GET.get('contract'))
+        get_object_or_404(Council, slug=self.kwargs["council"])
+        context = check_council_and_representative_match(self, context)
         return context
+class ContactPreviewView(TemplateView):
+    template_name = "procurement/contact_preview.html"
+    # TODO: When implementing functionality for the submit button in this view,
+    # be sure to also self.request.session.pop("representative_form_" + self.kwargs["representative"])
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = check_council_and_representative_match(self, context)
+        if (
+            "representative_form_" + self.kwargs["representative"]
+            in self.request.session
+        ):
+            form = self.request.session[
+                "representative_form_" + self.kwargs["representative"]
+            ]
+        else:
+            raise Http404("No form data found.")
+        context["message"] = form["message"]
 
-class ContactSuccessView(TemplateView):
-    template_name = "procurement/contact_success.html"
+        return context
