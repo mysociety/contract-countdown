@@ -108,6 +108,7 @@ class CouncilContractsView(FilterView):
         slug = self.kwargs.get("slug")
         council = get_object_or_404(Council, slug=slug)
         context["council"] = council
+        context["page_title"] = "{} | Contract Countdown".format(council.name)
 
         return context
 
@@ -123,6 +124,13 @@ class ContractDetailView(DetailView):
         obj = get_object_or_404(Tender, uuid=slug)
         return obj
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["page_title"] = "{} | Contract Countdown".format(self.get_object().title)
+
+        return context
+
 
 class EmailAlertView(FilterView):
     paginate_by = 20
@@ -132,7 +140,7 @@ class EmailAlertView(FilterView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["page_title"] = "Email Alerts"
+        context["page_title"] = "Email alerts | Contract Countdown"
         context["all_councils"] = Council.objects.all()
         if self.request.GET.get("source"):
             context["council_choice"] = self.request.GET.get("source")
@@ -171,6 +179,13 @@ class ContactView(FormView):
     def form_valid(self, form):
         council = Council.objects.filter(gss_code__in=form.cleaned_data["pc"])[0]
         return redirect("/contact/" + council.slug + "/")
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["page_title"] = "Contact a councillor | Contract Countdown"
+
+        return context
 
 
 class ContactCouncilView(TemplateView):
@@ -178,9 +193,12 @@ class ContactCouncilView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         council = get_object_or_404(Council, slug=self.kwargs["council"])
+
         if self.request.GET.get("contract"):
             context["contract"] = self.request.GET.get("contract")
+
         context["council"] = council
         context["officers"] = ClimateRepresentative.objects.filter(
             council=council
@@ -188,6 +206,9 @@ class ContactCouncilView(TemplateView):
         context["councillors"] = ClimateRepresentative.objects.filter(
             council=council
         ).filter(representative_type="councillor")
+
+        context["page_title"] = "Contacts at {} | Contract Countdown".format(council.name)
+
         return context
 
 
@@ -225,7 +246,12 @@ class ContactRepresentativeView(FormView):
         context = super().get_context_data(**kwargs)
         get_object_or_404(Council, slug=self.kwargs["council"])
         context = check_council_and_representative_match(self, context)
+
+        context["page_title"] = "Contact {} | Contract Countdown".format(context["representative"].full_name)
+
         return context
+
+
 class ContactPreviewView(TemplateView):
     template_name = "procurement/contact_preview.html"
     # TODO: When implementing functionality for the submit button in this view,
@@ -243,5 +269,7 @@ class ContactPreviewView(TemplateView):
         else:
             raise Http404("No form data found.")
         context["message"] = form["message"]
+
+        context["page_title"] = "Preview message to {} | Contract Countdown".format(context["representative"].full_name)
 
         return context

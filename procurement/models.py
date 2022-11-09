@@ -198,7 +198,10 @@ class ClimateRepresentative(models.Model):
     party_affiliation = models.CharField(max_length=50, blank=True)
     representative_type = models.CharField(max_length=10, choices=REPRESENTATIVE_CHOICES)
 
-
     @classmethod
     def slugify_name(cls, name):
         return slugify(name, allow_unicode=True)
+
+    @property
+    def full_name(self):
+        return "{} {} {}".format(self.title, self.first_name, self.surname)
