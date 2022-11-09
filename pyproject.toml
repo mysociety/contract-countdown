@@ -17,6 +17,7 @@ requests = "^2.28.1"
 requests-cache = "^0.9.5"
 django-filter = "^22.1"
 django-debug-toolbar = "^3.5.0"
+mysoc-dataset = "^0.2.2"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"
