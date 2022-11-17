@@ -6,9 +6,9 @@
         </p>
         <nav aria-label="Site">
             <ul class="nav justify-content-center">
-                {% include 'procurement/nav-item.html' with href="/" label="Contracts" %}
-                {% include 'procurement/nav-item.html' with href="/emails" label="Email alerts" %}
-                {% include 'procurement/nav-item.html' with href="/why" label="Why does this matter?" %}
+                {% include "procurement/nav-item.html" with url_name="home" label="Contracts" %}
+                {% include "procurement/nav-item.html" with url_name="emails" label="Email alerts" %}
+                {% include "procurement/nav-item.html" with url_name="home" label="Why does this matter?" %}
             </ul>
         </nav>
     </div>
