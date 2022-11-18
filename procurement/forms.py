@@ -2,6 +2,7 @@ from django import forms
 from django.core.validators import RegexValidator, EmailValidator
 
 from procurement.procurement_utils import is_valid_postcode
+from procurement.models import Council
 from procurement.mapit import (
     MapIt,
     NotFoundException,
@@ -34,6 +35,17 @@ class PostcodeForm(forms.Form):
                     return gss_codes
         return pc
 
+class HomePagePostcodeAndCouncilForm(PostcodeForm):
+    def clean_pc(self):
+        pc = super().clean_pc()
+        council = Council.objects.filter(name__iexact=pc).first()
+        if council:
+            del self._errors["pc"]
+            return [council.gss_code]
+        else:
+            self._errors["pc"] = ["Invalid UK postcode or council."]
+        return pc
+        
 
 class ContactPostcodeForm(PostcodeForm):
     pc = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
