@@ -49,7 +49,7 @@ class HomePageView(FilterView):
     def get_queryset(self):
         qs = (
             Tender.objects.all()
-            .filter(state="complete")
+            .filter(start_date__lte=date.today())
             .select_related("council")
             .prefetch_related("awards")
             .order_by("value")
@@ -90,7 +90,7 @@ class CouncilContractsView(FilterView):
     def get_queryset(self):
         qs = (
             Tender.objects.all()
-            .filter(state="complete")
+            .filter(start_date__lte=date.today())
             .select_related("council")
             .prefetch_related("awards")
             .order_by("value")
@@ -163,7 +163,7 @@ class EmailAlertView(FilterView):
     def get_queryset(self):
         qs = (
             Tender.objects.all()
-            .filter(state="complete")
+            .filter(start_date__lte=date.today())
             .select_related("council")
             .prefetch_related("awards")
             .order_by("value")

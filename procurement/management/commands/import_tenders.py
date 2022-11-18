@@ -201,7 +201,6 @@ class Command(BaseCommand):
                 title=row.tender_title,
                 description=row.tender_description,
                 state=row.tender_status,
-                value=row.tender_value_amount,
                 published=row.date,
                 council=Council.objects.get(authority_code=row["local-authority-code"]),
             )
@@ -227,11 +226,14 @@ class Command(BaseCommand):
                 tender=tender,
             )
             award.value=row.award_amount
+            tender.value = row.award_amount
             award.tender=tender
             if pd.notna(row.award_datePublished):
                 award.date = row.award_datePublished
             if pd.notna(row.award_start_date):
                 award.start_date = row.award_start_date
+                tender.start_date = row.award_start_date
+                tender.save()
             if pd.notna(row.award_end_date):
                 award.end_date = row.award_end_date
 
