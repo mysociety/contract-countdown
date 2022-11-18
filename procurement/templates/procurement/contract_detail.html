@@ -67,7 +67,7 @@
             {% endif %}
           {% endfor %}
             <li class="list-inline-item">
-                <a href="{% url 'council' tender.council.slug %}">
+                <a href="{% url 'home' %}{% urlparams pc=tender.council %}">
                     {{ tender.council.name }} contracts
                 </a>
             </li>

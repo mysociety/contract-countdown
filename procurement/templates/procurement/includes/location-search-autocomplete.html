@@ -1,11 +1,12 @@
 {% load static %}
+{% load urlparams %}
 
 <script src="{% static 'awesomplete/awesomplete.min.js' %}"></script>
 <script>
 
 var councils = {
   {% for council in all_councils %}
-    "{{ council.name }}": "{% url 'council' council.slug %}",
+    "{{ council.name }}": "{% url 'home' %}{% urlparams pc=council %}",
   {% endfor %}
 };
 var $pc = $('#council-search');
