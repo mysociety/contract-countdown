@@ -76,7 +76,6 @@ class EmailAlertPageTenderFilter(BaseTenderFilter):
     )
 
     def filter_source(self, queryset, name, value):
-        print(value)
         if value == "Councils in a region...":
             region = self.request.GET.get("region")
             countries = [x[0] for x in Council.COUNTRY_CHOICES]
