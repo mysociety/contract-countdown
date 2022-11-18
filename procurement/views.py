@@ -80,39 +80,6 @@ class HomePageView(FilterView):
 
         return context
 
-
-class CouncilContractsView(FilterView):
-    paginate_by = 20
-    context_object_name = "tenders"
-    filterset_class = HomePageTenderFilter
-    template_name = "procurement/council_detail.html"
-
-    def get_queryset(self):
-        qs = (
-            Tender.objects.all()
-            .filter(start_date__lte=date.today())
-            .select_related("council")
-            .prefetch_related("awards")
-            .order_by("value")
-        )
-
-        slug = self.kwargs.get("slug")
-        if slug is not None:
-            qs = qs.filter(council__slug=slug)
-
-        return qs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        slug = self.kwargs.get("slug")
-        council = get_object_or_404(Council, slug=slug)
-        context["council"] = council
-        context["page_title"] = "{} | Contract Countdown".format(council.name)
-
-        return context
-
-
 class ContractDetailView(DetailView):
     model = Tender
     context_object_name = "tender"
