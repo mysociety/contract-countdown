@@ -38,12 +38,13 @@ class PostcodeForm(forms.Form):
 class HomePagePostcodeAndCouncilForm(PostcodeForm):
     def clean_pc(self):
         pc = super().clean_pc()
-        council = Council.objects.filter(name__iexact=pc).first()
-        if council:
-            del self._errors["pc"]
-            return [council.gss_code]
-        else:
-            self._errors["pc"] = ["Invalid UK postcode or council."]
+        if type(pc) != list and pc != "":
+            council = Council.objects.filter(name__iexact=pc).first()
+            if council:
+                del self._errors["pc"]
+                return [council.gss_code]
+            else:
+                self._errors["pc"] = ["Invalid UK postcode or council."]
         return pc
         
 
